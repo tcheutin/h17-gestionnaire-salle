@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>eHall</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/css.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <nav class="navbar navbar-default navbar-inverse" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">eHall</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <!-- <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Link</a></li>
+        <li><a href="#">Link</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+      </ul>
+    </div> -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+<div id="login-overlay" class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+          <!-- <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button> -->
+          <h4 class="modal-title" id="myModalLabel">Login to eHall</h4>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+              <div class="col-xs-6">
+                  <div class="well">
+                      <form id="loginForm" method="POST" action="dashboard.html" novalidate="novalidate">
+                          <div class="form-group">
+                              <label for="username" class="control-label">Username</label>
+                              <input type="text" class="form-control" id="username" name="username" value="" required="" title="Please enter you username" placeholder="username">
+                              <span class="help-block"></span>
+                          </div>
+                          <div class="form-group">
+                              <label for="password" class="control-label">Password</label>
+                              <input type="password" class="form-control" id="password" name="password" value="" required="" title="Please enter your password">
+                              <span class="help-block"></span>
+                          </div>
+                          <div id="loginErrorMsg" class="alert alert-error hide">Wrong username og password</div>
+                          <div class="checkbox">
+                              <label>
+                                  <input type="checkbox" name="remember" id="remember"> Remember login
+                              </label>
+                              <p class="help-block">(if this is a private computer)</p>
+                          </div>
+                          <button type="submit" class="btn btn-success btn-block">Login</button>
+                          <a href="/forgot/" class="btn btn-default btn-block">Help to login</a>
+                      </form>
+                  </div>
+              </div>
+              <div class="col-xs-6">
+                  <p class="lead">Register now for <span class="text-success">FREE</span></p>
+                  <ul class="list-unstyled" style="line-height: 2">
+                      <li><span class="fa fa-check text-success"></span> Manage your events</li>
+                      <li><span class="fa fa-check text-success"></span> Manage your auditoriums</li>
+                      <li><span class="fa fa-check text-success"></span> Check statistics</li>
+                      <li><span class="fa fa-check text-success"></span> Easy access</li>
+                      <!-- <li><span class="fa fa-check text-success"></span> Get a gift <small>(only new customers)</small></li> -->
+                      <!-- <li><a href="/read-more/"><u>Read more</u></a></li> -->
+                  </ul>
+                  <p><a href="/new-customer/" class="btn btn-info btn-block">Yes please, register now!</a></p>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+  </body>
+</html>
