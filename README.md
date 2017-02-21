@@ -25,7 +25,7 @@ git clone https://github.com/gti525/h17-gestionnaire-salle.git
 Make migrations & migrate models
 ```bash
 python manage.py makemigrations
-python3 manage.py migrate
+python manage.py migrate
 ```
 
 Run the server
