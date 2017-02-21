@@ -48,5 +48,10 @@ http://127.0.0.1:8000/event
 
 * **Kenzyme Le** - *Initial work* - [noireDen](https://github.com/noireDen)
 * **Alain Zakkour**
+* **Jean-Pierre Bertrand Dorion** 
+* **Thierry Cheutin**
+* **Nicolas Nadeau**
+* **Raphaël Zumer**
+
 
 See also the list of [contributors](https://github.com/gti525/h17-gestionnaire-salle/contributors) who participated in this project.
