@@ -6,13 +6,13 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
+* Linux (preferable) or Windows
 * Python 3
-* Postgresql 
-  * DB ehall created
+* Postgresql
+  * DB ehall created with these creds:
     * user: ehall
     * password: 4dm1n1str4t0r!
   * postgresql service started
-* Linux (preferable) or Windows
 
 ### Installing
 All the commands below were run in a Linux's Terminal. For Windows, please adapt the commands to your environment. 
@@ -22,20 +22,20 @@ Clone the project
 git clone https://github.com/gti525/h17-gestionnaire-salle.git
 ```
 
-Create the tables
+Make migrations & migrate models
 ```bash
 python manage.py makemigrations
 python3 manage.py migrate
 ```
 
 Run the server
-```
+```bash
 python manage.py runserver
 ```
 
 Test the website in your browser
 ```
-http://127.0.0.1:8000/admin/
+http://127.0.0.1:8000/event
 ```
 
 ## Built With
