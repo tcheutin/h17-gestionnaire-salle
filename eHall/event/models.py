@@ -9,13 +9,13 @@ class Event(models.Model):
         ('c', 'Closed'),
     )
 
-    status = models.CharField(max_length=1, choices=STATUSES, blank=True, default='i', help_text='Event status')
+    status = models.CharField(max_length=1, choices=STATUSES, blank=True, default='i', help_text='Event current status')
     title = models.CharField(max_length=100, default='', help_text="Event's name")
-    sticker = models.ImageField(default='') # TODO: FINISH
-    image = models.ImageField(default='') # TODO: TO FINISH
+    sticker = models.ImageField(default='') # TODO:
+    image = models.ImageField(default='') # TODO:
     artist = models.CharField(max_length=100, default='', help_text="Artist's name")
     isPublished = models.BooleanField(default=False)
-    isOnSale = models.BooleanField(default=True)
+    isOnSale = models.BooleanField(default=False)
     date = models.DateTimeField(default=datetime.now, blank=True)
     duration = models.DurationField() # TODO: verifiy with other team
     description = models.TextField(max_length=500, help_text='Enter a brief description of the event')
@@ -56,4 +56,4 @@ class Ticket(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, default='')
     price = models.DecimalField(max_digits=9, decimal_places=2, default=0)
     isReserved = models.BooleanField(default=False)
-    isSold = models.BooleanField(default=True)
+    isSold = models.BooleanField(default=False)
