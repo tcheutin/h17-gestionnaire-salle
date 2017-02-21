@@ -6,35 +6,60 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-
-```
-Python 3
-Linux (preferable) or Windows
-
-```
+* Linux (preferable) or Windows
+* Python 3
+* Postgresql
+  * DB ehall created with these creds:
+    * user: ehall
+    * password: 4dm1n1str4t0r!
+  * postgresql service started
 
 ### Installing
+All the commands below were run in a Linux's Terminal. For Windows, please adapt the commands to your environment. 
 
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
-```
 Clone the project
-
+```bash
+git clone https://github.com/gti525/h17-gestionnaire-salle.git
 ```
 
-And repeat
-
+Change directory to cloned project
 ```
-until finished
+cd h17-gestionnaire-salle/eHall
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+Make migrations & migrate models
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
 
-## Deployment
+Run the server
+```bash
+python manage.py runserver
+```
 
-Add additional notes about how to deploy this on a live system
+Test the website in your browser
+```
+http://127.0.0.1:8000/event
+```
+
+#### Optional
+To access the admin page, an admin user must be created.
+
+Change directory to cloned project
+```
+cd h17-gestionnaire-salle/eHall
+```
+
+Create admin user
+```
+python manage.py createsuperuser
+```
+
+Login with the new admin user
+```
+http://127.0.0.1:8000/admin
+```
 
 ## Built With
 
@@ -46,5 +71,10 @@ Add additional notes about how to deploy this on a live system
 
 * **Kenzyme Le** - *Initial work* - [noireDen](https://github.com/noireDen)
 * **Alain Zakkour**
+* **Jean-Pierre Bertrand Dorion** 
+* **Thierry Cheutin**
+* **Nicolas Nadeau**
+* **Raphaël Zumer**
+
 
 See also the list of [contributors](https://github.com/gti525/h17-gestionnaire-salle/contributors) who participated in this project.
