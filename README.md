@@ -22,6 +22,11 @@ Clone the project
 git clone https://github.com/gti525/h17-gestionnaire-salle.git
 ```
 
+Change directory to cloned project
+```
+cd h17-gestionnaire-salle/eHall
+```
+
 Make migrations & migrate models
 ```bash
 python manage.py makemigrations
@@ -36,6 +41,24 @@ python manage.py runserver
 Test the website in your browser
 ```
 http://127.0.0.1:8000/event
+```
+
+#### Optional
+To access the admin page, an admin user must be created.
+
+Change directory to cloned project
+```
+cd h17-gestionnaire-salle/eHall
+```
+
+Create admin user
+```
+python manage.py createsuperuser
+```
+
+Login with the new admin user
+```
+http://127.0.0.1:8000/admin
 ```
 
 ## Built With
