@@ -124,3 +124,7 @@ USE_TZ = False
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+# dj_database_url configuration for Heroku
+import dj_database_url
+DATABASES['default'] = dj_database_url.config()
