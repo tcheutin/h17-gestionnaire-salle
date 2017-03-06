@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect
 from .forms import UserLoginForm, UserRegisterForm
 
 # Create your views here.
+
 def login_view(request):
     if(request.user.is_authenticated()):
         return redirect("/event")
