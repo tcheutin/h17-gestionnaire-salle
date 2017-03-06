@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'event.apps.EventConfig',
     'auditorium.apps.AuditoriumConfig',
+    'accounts',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -126,5 +128,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
 # dj_database_url configuration for Heroku
-import dj_database_url
-DATABASES['default'] = dj_database_url.config()
+##import dj_database_url
+##DATABASES['default'] = dj_database_url.config()
