@@ -11,7 +11,9 @@ from .forms import UserLoginForm, UserRegisterForm
 
 # Create your views here.
 def login_view(request):
-    print(request.user.is_authenticated())
+    if(request.user.is_authenticated()):
+        return redirect("/event")
+    print()
     title = "Login"
     form = UserLoginForm(request.POST or None)
     if form.is_valid():
