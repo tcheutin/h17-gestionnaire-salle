@@ -11,8 +11,6 @@
     {% load staticfiles %}
 	<link rel="stylesheet" href="{% static 'accounts/css/bootstrap.min.css' %}" type = "text/css"/>
     <link rel="stylesheet" href="{% static 'accounts/css/css.css' %}" type = "text/css"/>
-    <!-- <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"> -->
-
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -28,15 +26,31 @@
     <script src="js/bootstrap.min.js"></script>
 
     <nav class="navbar navbar-default navbar-inverse" role="navigation">
-      <div class="container-fluid">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">eHall</a>
+    </div>
 
-        <a class="navbar-brand" href="/">eHall</a>
-        <a class="navbar-brand" href="/event">Events</a>
-        <a class="navbar-brand" href="/auditorium">Auditoriums</a>
-        <a class="navbar-brand navbar-right" href="/logout">Logout</a>
-        
-      </div><!-- /.container-fluid -->
-    </nav>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li ><a href="/event">Events</a></li>
+        <li class="active"><a href="/auditorium">Auditoriums</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+          <li><a href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </div><!-- /.container-fluid -->
+</nav>
 
 
 <div class="container">
@@ -45,7 +59,7 @@
 
         <div class="col-md-12">
         <tr>
-          <td><h3>Events</h3></td>
+          <td><h3>Auditoriums</h3></td>
           <td><a data-placement="top" data-toggle="tooltip" title="Add"> <button class="btn icon-btn btn-success" data-title="Add" data-toggle="modal" data-target="#add"><span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span> Add</button></a></td>
         </tr>
         <div class="table-responsive">
@@ -58,10 +72,8 @@
                    <th><input type="checkbox" id="checkall" /></th>
                    <th>ID</th>
                    <th>Name</th>
-                   <th>Auditorium</th>
-                   <th>Date</th>
                    <th>Status</th>
-                   <th>Tickets</th>
+                   <th>Seats</th>
                    <th>Edit</th>
                    <th>Delete</th>
                    <th>Statistique</th>
@@ -71,11 +83,9 @@
     <tr>
       <td><input type="checkbox" class="checkthis" /></td>
       <td>1</td>
-      <td>Beatles</td>
-      <td>Salle Pas-Perdu</td>
-      <td>30/01/2017 17:00pm</td>
-      <td>In progress</td>
-      <td>200/600</td>
+      <td>Salle Mathieu</td>
+      <td>Full</td>
+      <td>350</td>
       <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
       <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
       <td><p data-placement="top" data-toggle="tooltip" title="statistique"><button class="btn btn-warning btn-xs" data-title="statistique" data-toggle="modal" data-target="#statistique" ><span class="glyphicon glyphicon-stats"></span></button></p></td>
@@ -84,11 +94,9 @@
     <tr>
       <td><input type="checkbox" class="checkthis" /></td>
       <td>2</td>
-      <td>Eminem</td>
-      <td>Salle Jacque</td>
-      <td>15/12/2017 19:00pm</td>
-      <td>Open for purchase</td>
-      <td>0/400</td>
+      <td>Salle Pas-Perdu</td>
+      <td>Empty</td>
+      <td>600</td>
       <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
       <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
       <td><p data-placement="top" data-toggle="tooltip" title="statistique"><button class="btn btn-warning btn-xs" data-title="statistique" data-toggle="modal" data-target="#statistique" ><span class="glyphicon glyphicon-stats"></span></button></p></td>
@@ -98,11 +106,21 @@
     <tr>
       <td><input type="checkbox" class="checkthis" /></td>
       <td>3</td>
-      <td>Rolling Stones</td>
       <td>Salle Jacque</td>
-      <td>17/02/2017 18:00pm</td>
-      <td>Open for purchase</td>
-      <td>0/400</td>
+      <td>Open</td>
+      <td>400</td>
+      <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+      <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+      <td><p data-placement="top" data-toggle="tooltip" title="statistique"><button class="btn btn-warning btn-xs" data-title="statistique" data-toggle="modal" data-target="#statistique" ><span class="glyphicon glyphicon-stats"></span></button></p></td>
+    </tr>
+
+
+    <tr>
+      <td><input type="checkbox" class="checkthis" /></td>
+      <td>4</td>
+      <td>Salle Alphonse</td>
+      <td>Full</td>
+      <td>1000</td>
       <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p></td>
       <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
       <td><p data-placement="top" data-toggle="tooltip" title="statistique"><button class="btn btn-warning btn-xs" data-title="statistique" data-toggle="modal" data-target="#statistique" ><span class="glyphicon glyphicon-stats"></span></button></p></td>
@@ -132,51 +150,31 @@
 <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
       <div class="modal-dialog">
     <div class="modal-content">
-          <div class="modal-header">
+      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-        <h4 class="modal-title custom_align" id="Heading">Create event details</h4>
+        <h4 class="modal-title custom_align" id="Heading">Create auditorium details</h4>
       </div>
         <div class="modal-body">
         <div class="form-group">
           <label for="Name">Name:</label>
-          <input class="form-control " type="text" placeholder="Name your event.">
+          <input class="form-control " type="text" placeholder="Name your auditorium.">
         </div>
         <div class="form-group">
-          <label for="Status">Auditorium:</label>
-          <select class="form-control" id="auditorium" name="Auditorium">
-              <option>Salle Alphonse</option>
-              <option>Salle Jacque</option>
-              <option>Salle Mathieu</option>
+          <label for="Status">Status:</label>
+          <select class="form-control" id="status_auditorium" name="status">
+              <option>Empty</option>
+              <option>Open</option>
+              <option>Full</option>
+              <option>Closed</option>
           </select>
         </div>
-        <div class="row">
-            <div class='col-sm-6'>
-                <div class="form-group">
-                    <div class='input-group date' id='datetimepicker1'>
-                        <input type='text' class="form-control" />
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <script type="text/javascript">
-                $(function () {
-                    $('#datetimepicker1').datetimepicker();
-                });
-            </script>
-        </div>
         <div class="form-group">
-          <label for="Tickets">Tickets:</label>
-          <input class="form-control " type="text" placeholder="Number of tickets to publish.">
-        </div>
-        <div class="form-group">
-          <label for="Description">Description:</label>
-          <textarea rows="2" class="form-control" placeholder="Description Event"></textarea>
+          <label for="seats">Seats:</label>
+          <input class="form-control " type="text" placeholder="Number of seats available.">
         </div>
       </div>
           <div class="modal-footer ">
-        <button type="button" class="btn btn-success btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Add Event</button>
+        <button type="button" class="btn btn-success btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Add Auditorium</button>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -196,40 +194,20 @@
           <div class="modal-body">
             <div class="form-group">
               <label for="Name">Name:</label>
-              <input class="form-control " type="text" placeholder="Beatles">
+              <input class="form-control " type="text" placeholder="Salle Mathieu">
             </div>
             <div class="form-group">
-              <label for="Status">Auditorium:</label>
-              <select class="form-control" id="auditorium" name="Auditorium">
-                  <option>Salle Alphonse</option>
-                  <option>Salle Jacque</option>
-                  <option>Salle Mathieu</option>
+              <label for="Status">Status:</label>
+              <select class="form-control" id="status_auditorium" name="status">
+                  <option>Empty</option>
+                  <option>Open</option>
+                  <option>Full</option>
+                  <option>Closed</option>
               </select>
             </div>
-            <div class="row">
-                <div class='col-sm-6'>
-                    <div class="form-group">
-                        <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control" />
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <script type="text/javascript">
-                    $(function () {
-                        $('#datetimepicker1').datetimepicker();
-                    });
-                </script>
-            </div>
             <div class="form-group">
-              <label for="Tickets">Tickets:</label>
-              <input class="form-control " type="text" placeholder="300">
-            </div>
-            <div class="form-group">
-              <label for="Description">Description:</label>
-              <textarea rows="2" class="form-control" placeholder="Show des Beatles"></textarea>
+              <label for="seats">Seats:</label>
+              <input class="form-control " type="text" placeholder="350">
             </div>
       </div>
           <div class="modal-footer ">
@@ -264,57 +242,6 @@
   </div>
       <!-- /.modal-dialog -->
     </div>
-
-
-    <div class="modal fade" id="statistique" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-      <div class="modal-dialog">
-    <div class="modal-content">
-          <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-        <h4 class="modal-title custom_align" id="Heading">Statistiques</h4>
-      </div>
-          <div class="modal-body">
-            <div class="container-fluid">
-              <div class="col col-md-12">
-                    <center><h4>Current Stats</h4></center>
-                        Ticket Bought<span class="pull-right strong"></span>
-                         <div class="progress">
-                          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="15"aria-valuemin="0" aria-valuemax="100" style="width:33%">200</div>
-                        </div>
-
-                        Number of tickets scanned<span class="pull-right strong"></span>
-                         <div class="progress">
-                          <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="30"aria-valuemin="0" aria-valuemax="100" style="width:17%">150</div>
-                        </div>
-
-                        Gate 1 : scanned tickets<span class="pull-right strong"></span>
-                         <div class="progress">
-                          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="8"aria-valuemin="0" aria-valuemax="100" style="width:16%">25</div>
-                        </div>
-
-                        Gate 2 : scanned tickets<span class="pull-right strong"></span>
-                         <div class="progress">
-                          <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="8"aria-valuemin="0" aria-valuemax="100" style="width:33%">50</div>
-                        </div>
-
-                        Gate 3 : scanned tickets<span class="pull-right strong"></span>
-                         <div class="progress">
-                          <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="8"aria-valuemin="0" aria-valuemax="100" style="width:66%">100</div>
-                        </div>
-
-              </div>
-            </div>
-      </div>
-        <div class="modal-footer ">
-        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Ok</button>
-      </div>
-        </div>
-    <!-- /.modal-content -->
-    </div>
-      <!-- /.modal-dialog -->
-    </div>
-
-
 
 
 

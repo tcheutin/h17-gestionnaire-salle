@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('accounts.urls')),
     url(r'^', include('event.urls')),
+    url(r'^', include('auditorium.urls')),
 ]
+
