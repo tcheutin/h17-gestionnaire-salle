@@ -98,5 +98,4 @@ ENV/
 
 # Collected static files
 static/
-
 *.gz
