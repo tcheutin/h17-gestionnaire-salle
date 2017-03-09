@@ -37,6 +37,11 @@ python manage.py makemigrations --settings=eHall.settings.local
 python manage.py migrate --settings=eHall.settings.local
 ```
 
+Collect static files
+```bash
+python manage.py collectstatic --settings=eHall.settings.local
+```
+
 Run the server
 ```
 python server.py
