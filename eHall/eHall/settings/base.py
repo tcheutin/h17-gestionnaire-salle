@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -110,6 +110,5 @@ USE_TZ = False
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
-# dj_database_url configuration for Heroku
-##import dj_database_url
-##DATABASES['default'] = dj_database_url.config()
+print("Base dir path: ", BASE_DIR)
+print("Static root: ", STATIC_ROOT)
