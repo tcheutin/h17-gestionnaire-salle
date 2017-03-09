@@ -11,3 +11,4 @@ pycryptodome==3.4.5
 pyparsing==2.1.10
 six==1.10.0
 django-crispy-forms==1.6.1
+waitress==1.0.2
