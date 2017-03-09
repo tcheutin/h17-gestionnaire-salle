@@ -6,11 +6,22 @@ class Terminal(models.Model):
     CONNECTION_STATUS = (('Connected', 'Connected'),
                          ('Ready', 'Ready'))
 
-    id = models.AutoField(primary_key=True)
-    token = models.CharField(max_length=90, null=False, blank=False)
+    id = models.AutoField(primary_key=True )
+
+    token = models.CharField(   max_length=90,
+                                null=False,
+                                blank=False,
+                                unique=True)
+
     status  = models.CharField( max_length=30,
                                 choices=CONNECTION_STATUS,
                                 default='Connected',
                                 null=False,
                                 blank=False)
-    ipAddress = models.CharField(max_length=30, null=False, blank=False)
+
+    address = models.CharField(   max_length=30,
+                                    null=False,
+                                    blank=False,
+                                    unique=True)
+
+    netmask = models.CharField(max_length=30, null=False, blank=False)
