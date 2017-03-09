@@ -6,4 +6,4 @@ from rest_framework import serializers
 class TerminalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Terminal
-        fields = ('token', 'ipAddress', 'status')
+        fields = ('token', 'address', 'status')
