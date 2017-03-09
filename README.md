@@ -29,13 +29,13 @@ cd h17-gestionnaire-salle/eHall
 
 Make migrations & migrate models
 ```bash
-python manage.py makemigrations
-python manage.py migrate
+python manage.py makemigrations --settings=eHall.settings.local
+python manage.py migrate --settings=eHall.settings.local
 ```
 
 Run the server
 ```bash
-python manage.py runserver
+python manage.py runserver --settings=eHall.settings.local
 ```
 
 Test the website in your browser
