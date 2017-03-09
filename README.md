@@ -6,7 +6,6 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-* Linux (preferable) or Windows
 * Python 3
 * Postgresql
   * DB ehall created with these creds:
@@ -27,6 +26,11 @@ Change directory to cloned project
 cd h17-gestionnaire-salle/eHall
 ```
 
+Install dependencies
+```
+pip install -r ../requirements.txt
+```
+
 Make migrations & migrate models
 ```bash
 python manage.py makemigrations --settings=eHall.settings.local
@@ -34,9 +38,14 @@ python manage.py migrate --settings=eHall.settings.local
 ```
 
 Run the server
+```
+python server.py
+```
+Or: 
 ```bash
 python manage.py runserver --settings=eHall.settings.local
 ```
+
 
 Test the website in your browser
 ```
@@ -53,7 +62,7 @@ cd h17-gestionnaire-salle/eHall
 
 Create admin user
 ```
-python manage.py createsuperuser
+python manage.py createsuperuser --settings=eHall.settings.local
 ```
 
 Login with the new admin user
