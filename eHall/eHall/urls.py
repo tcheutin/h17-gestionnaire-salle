@@ -20,7 +20,7 @@ from accounts.views import (login_view, register_view, logout_view)
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('accounts.urls')),
-    url(r'^', include('event.urls')),
-    url(r'^', include('auditorium.urls')),
+    url(r'^event/', include('event.urls')),
+    url(r'^auditorium/', include('auditorium.urls')),
 ]
 
