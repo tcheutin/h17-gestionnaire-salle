@@ -33,13 +33,13 @@ pip install -r ../requirements.txt
 
 Make migrations & migrate models
 ```bash
-python manage.py makemigrations --settings=eHall.settings.local
-python manage.py migrate --settings=eHall.settings.local
+python manage.py makemigrations
+python manage.py migrate
 ```
 
 Collect static files
 ```bash
-python manage.py collectstatic --settings=eHall.settings.local
+python manage.py collectstatic
 ```
 
 Run the server
@@ -48,7 +48,7 @@ python server.py
 ```
 Or: 
 ```bash
-python manage.py runserver --settings=eHall.settings.local
+python manage.py runserver
 ```
 
 
@@ -67,7 +67,7 @@ cd h17-gestionnaire-salle/eHall
 
 Create admin user
 ```
-python manage.py createsuperuser --settings=eHall.settings.local
+python manage.py createsuperuser
 ```
 
 Login with the new admin user
