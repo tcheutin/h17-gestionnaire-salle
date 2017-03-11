@@ -27,37 +27,26 @@ def dashboard(request):
         
     context = {
         'events': events,
-        #'page_obj': paginator,
     }  
     return render(request, 'dashboard.html', {**eventContext, **context})
     
 def add(request):
-    form = AddForm()
-    
-    context = {
-        'addForm': form,
-    }
-    return render(request, 'addForm.html', {**eventContext, **context})
+    if request.method == 'GET':
+        return getAddForm(request)
+    elif request.method == 'POST':
+        return# ...
     
 def edit(request, eventId):
-    event = get_object_or_404(Event, pk=eventId)
-    form = EditForm()
-    
-    context = {
-        'event': event,
-        'editForm': form,
-    }
-    return render(request, 'editForm.html', {**eventContext, **context})
+    if request.method == 'GET':
+        return getEditForm(request, eventId)
+    elif request.method == 'POST':
+        return# ...
     
 def delete(request, eventId):
-    event = get_object_or_404(Event, pk=eventId)
-    form = DeleteForm()
-    
-    context = {
-        'event': event,
-        'deleteForm': form,
-    }
-    return render(request, 'deleteForm.html', {**eventContext, **context})
+    if request.method == 'GET':
+        return getDeleteForm(request, eventId)
+    elif request.method == 'POST':
+        return# ...
     
 def statistics(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
@@ -66,3 +55,29 @@ def statistics(request, eventId):
         'event': event,
     }
     return render(request, 'statisticsView.html', {**eventContext, **context})
+    
+def getAddForm(request):
+    form = AddForm()
+        
+    context = {
+        'form': form,
+    }
+    return render(request, 'addForm.html', {**eventContext, **context})
+    
+def getEditForm(request, eventId):
+    event = get_object_or_404(Event, pk=eventId)
+    form = EditForm(instance=event)
+    
+    context = {
+        'event': event,
+        'form': form,
+    }
+    return render(request, 'editForm.html', {**eventContext, **context})
+    
+def getDeleteForm(request, eventId):
+    event = get_object_or_404(Event, pk=eventId)
+    
+    context = {
+        'event': event,
+    }
+    return render(request, 'deleteForm.html', {**eventContext, **context})
