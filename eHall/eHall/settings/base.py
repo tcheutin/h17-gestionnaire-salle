@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'eHall',
     'accounts',
     'crispy_forms',
+    'bootstrap_pagination',
 ]
 
 MIDDLEWARE = [

@@ -20,6 +20,7 @@ class Event(models.Model):
     startDate = models.DateTimeField(blank=True, default=timezone.now)
     endDate = models.DateTimeField(blank=True, default=timezone.now)
     description = models.TextField(max_length=10000)
+    nbTickets = models.IntegerField(default=0)
     auditorium = models.ForeignKey('auditorium.Auditorium', null=True, on_delete=models.SET_NULL)
 
     # Metadata
@@ -43,7 +44,7 @@ class Event(models.Model):
 import uuid # Required for unique ticket instances
 
 class Ticket(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ticket ID')
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique Ticket ID')
     event = models.ForeignKey(Event, null=True, on_delete=models.SET_NULL, default='')
     price = models.DecimalField(max_digits=9, decimal_places=2, default=0)
     isReserved = models.BooleanField(default=False)
