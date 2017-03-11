@@ -3,6 +3,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Event
+from .forms import *
 
 # Set the active attribute to activate the appropriate navbar button
 eventContext = {
@@ -30,10 +31,38 @@ def dashboard(request):
     }  
     return render(request, 'dashboard.html', {**eventContext, **context})
     
+def add(request):
+    form = AddForm()
+    
+    context = {
+        'addForm': form,
+    }
+    return render(request, 'addForm.html', {**eventContext, **context})
+    
 def edit(request, eventId):
+    event = get_object_or_404(Event, pk=eventId)
+    form = EditForm()
+    
+    context = {
+        'event': event,
+        'editForm': form,
+    }
+    return render(request, 'editForm.html', {**eventContext, **context})
+    
+def delete(request, eventId):
+    event = get_object_or_404(Event, pk=eventId)
+    form = DeleteForm()
+    
+    context = {
+        'event': event,
+        'deleteForm': form,
+    }
+    return render(request, 'deleteForm.html', {**eventContext, **context})
+    
+def statistics(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
     
     context = {
         'event': event,
     }
-    return render(request, 'edit.html', {**eventContext, **context})
+    return render(request, 'statisticsView.html', {**eventContext, **context})
