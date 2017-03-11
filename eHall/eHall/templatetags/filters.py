@@ -1,6 +1,6 @@
 from django import template
 import locale
-locale.setlocale(locale.LC_ALL, 'en-CA')
+locale.setlocale(locale.LC_ALL, '')
 
 register = template.Library()
 
