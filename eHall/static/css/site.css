@@ -19,6 +19,10 @@ h2 {
     font-size: 10pt;
 }
 
+.progress-bar {
+    min-width:2em;
+}
+
 #login-dp {
     min-width: 250px;
     padding: 14px 14px 0;

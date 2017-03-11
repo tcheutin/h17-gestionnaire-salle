@@ -11,3 +11,7 @@ def formatCurrency(value):
 @register.filter(name='bigint')
 def formatInteger(value):
     return locale.format('%d', value, grouping=True)
+    
+@register.filter(name='ratio')
+def ratio(value, arg):
+    return value / arg * 100
