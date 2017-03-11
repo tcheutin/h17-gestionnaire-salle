@@ -1,6 +1,6 @@
 {% load crispy_forms_tags %}
 
-<form method="post">
-    Add a new event...
+<form method="post" id="add-form">
+    {% csrf_token %}
     {{ form|crispy }}
 </form>

@@ -13,7 +13,7 @@ class AddForm(ModelForm):
 
     class Meta:
         model = Event
-        fields = ['name', 'artist', 'image', 'startDate', 'endDate', 'description', 'auditorium']
+        fields = ['name', 'artist', 'image', 'startDate', 'endDate', 'description', 'nbTickets', 'auditorium']
         
 class EditForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -25,4 +25,4 @@ class EditForm(ModelForm):
 
     class Meta:
         model = Event
-        fields = ['name', 'artist', 'image', 'startDate', 'endDate', 'description', 'auditorium']
+        fields = ['name', 'artist', 'image', 'startDate', 'endDate', 'description', 'nbTickets', 'auditorium']

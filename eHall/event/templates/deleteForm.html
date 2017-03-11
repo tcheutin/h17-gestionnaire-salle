@@ -1,6 +1,6 @@
 {% load crispy_forms_tags %}
 
-<form method="post">
-    Delete {{ event.id }}...
+<form method="post" id="delete-form">
+    {% csrf_token %}
     {{ form|crispy }}
 </form>

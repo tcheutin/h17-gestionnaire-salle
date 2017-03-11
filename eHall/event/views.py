@@ -11,30 +11,28 @@ eventContext = {
 }
 
 def dashboard(request):
-    events = Event.objects.all()
-    paginator = Paginator(events, 10) # Show 10 events per page
-    
     page = request.GET.get('page')
-    try:
-        # Display the requested page
-        events = paginator.page(page)
-    except PageNotAnInteger:
-        # Display the first page if no valid page argument is provided
-        events = paginator.page(1)
-    except EmptyPage:
-        # Display the last page if the requested range exceeds the number of entries
-        events = paginator.page(paginator.num_pages)
+    events = getEventPage(page)
         
     context = {
         'events': events,
-    }  
+    }
     return render(request, 'dashboard.html', {**eventContext, **context})
     
 def add(request):
     if request.method == 'GET':
         return getAddForm(request)
     elif request.method == 'POST':
-        return# ...
+        form = AddForm(request.POST or None)
+        if form.is_valid():
+            event = form.save()
+            
+        events = getEventPage(1)
+        
+        context = {
+            'events': events,
+        }
+        return render(request, 'eventTable.html', {**eventContext, **context})
     
 def edit(request, eventId):
     if request.method == 'GET':
@@ -81,3 +79,19 @@ def getDeleteForm(request, eventId):
         'event': event,
     }
     return render(request, 'deleteForm.html', {**eventContext, **context})
+    
+def getEventPage(page):
+    events = Event.objects.order_by('-id')
+    paginator = Paginator(events, 10) # Show 10 events per page
+    
+    try:
+        # Display the requested page
+        events = paginator.page(page)
+    except PageNotAnInteger:
+        # Display the first page if no valid page argument is provided
+        events = paginator.page(1)
+    except EmptyPage:
+        # Display the last page if the requested range exceeds the number of entries
+        events = paginator.page(paginator.num_pages)
+        
+    return events
