@@ -76,9 +76,18 @@ def delete(request, eventId):
     
 def statistics(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
+    tickets = Ticket.objects.filter(event=event)
+    ticketsSold = tickets.filter(isSold=True)
+    
+    numTickets = tickets.count()
+    numTicketsSold = ticketsSold.count()
+    numTicketsUsed = ticketsSold.filter(isUsed=True).count()
     
     context = {
         'event': event,
+        'tickets': numTickets,
+        'ticketsSold': numTicketsSold,
+        'ticketsUsed': numTicketsUsed,
     }
     return render(request, 'statisticsView.html', {**eventContext, **context})
     
