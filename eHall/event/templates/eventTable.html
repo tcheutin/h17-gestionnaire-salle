@@ -5,6 +5,7 @@
             <th>Name</th>
             <th>Status</th>
             <th>Tickets</th>
+            <th>Price</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -16,6 +17,7 @@
                 <td>{{ event.name }}</td>
                 <td>{{ event.get_status_display }}</td>
                 <td>{{ event.nbTickets }}</td>
+                <td>{{ event.ticketPrice }}</td>
                 <td>
                     <span data-placement="top" data-toggle="tooltip" title="Statistics">
                         <button id="statistics#{{ event.id }}" class="btn btn-warning btn-xs" data-title="statistics" data-toggle="modal" data-target="#statistics" >
