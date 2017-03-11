@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'event.apps.EventConfig',
     'auditorium.apps.AuditoriumConfig',
+    'eHall',
     'accounts',
     'crispy_forms',
 ]
