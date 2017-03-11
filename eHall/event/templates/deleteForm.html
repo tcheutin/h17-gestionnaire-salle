@@ -2,5 +2,7 @@
 
 <form method="post" id="delete-form">
     {% csrf_token %}
-    {{ form|crispy }}
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to delete <em>{{ event.name }}</em>?
+    </div>
 </form>
