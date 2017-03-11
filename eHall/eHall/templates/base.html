@@ -17,7 +17,7 @@
   </head>
   <body>
 
-    {% include "nav.html" %}
+    {% include 'nav.html' %}
     
     {% block content %}
     {% endblock %}
@@ -35,6 +35,8 @@
     <script src="{% static 'js/site.js' %}"></script>
     {% block script %}
     {% endblock %}
+    
+    {% include 'footer.html' %}
     
     </body>
 </html>
