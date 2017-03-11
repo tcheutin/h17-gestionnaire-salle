@@ -20,6 +20,7 @@ class Event(models.Model):
     startDate = models.DateTimeField(blank=True, default=timezone.now)
     endDate = models.DateTimeField(blank=True, default=timezone.now)
     description = models.TextField(max_length=10000)
+    nbTickets = models.IntegerField(default=0)
     auditorium = models.ForeignKey('auditorium.Auditorium', null=True, on_delete=models.SET_NULL)
 
     # Metadata

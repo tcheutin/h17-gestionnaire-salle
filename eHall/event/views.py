@@ -26,6 +26,7 @@ def dashboard(request):
         
     context = {
         'events': events,
+        #'page_obj': paginator,
     }  
     return render(request, 'dashboard.html', {**eventContext, **context})
     
