@@ -1,7 +1,6 @@
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
-from .models import Event
-from auditorium.models import Auditorium
+from .models import Auditorium
 
 class AddForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -12,8 +11,8 @@ class AddForm(ModelForm):
         self.helper = FormHelper(self)
 
     class Meta:
-        model = Event
-        fields = ['name', 'artist', 'image', 'startDate', 'endDate', 'description', 'nbTickets', 'ticketPrice', 'auditorium']
+        model = Auditorium
+        fields = ['name', 'address', 'city', 'province', 'capacity']
         
 class EditForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -24,5 +23,5 @@ class EditForm(ModelForm):
         self.helper = FormHelper(self)
 
     class Meta:
-        model = Event
-        fields = ['name', 'artist', 'image', 'startDate', 'endDate', 'description', 'auditorium']
+        model = Auditorium
+        fields = ['name', 'address', 'city', 'province', 'capacity']

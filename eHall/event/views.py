@@ -2,7 +2,7 @@
 
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import Event
+from .models import Event, Ticket
 from .forms import *
 
 # Set the active attribute to activate the appropriate navbar button
@@ -25,7 +25,16 @@ def add(request):
     elif request.method == 'POST':
         form = AddForm(request.POST or None)
         if form.is_valid():
-            form.save()
+            event = form.save()
+            ticketList = []
+            for i in range(1, event.nbTickets):
+                ticket = Ticket(
+                    event = event,
+                    price = event.ticketPrice,
+                )
+                ticketList.append(ticket)
+                
+            Ticket.objects.bulk_create(ticketList)
             
         events = getEventPage(1)
         
