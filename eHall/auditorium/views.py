@@ -1,6 +1,6 @@
 # Create your views here.
 
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Auditorium
 
@@ -30,7 +30,8 @@ def auditorium(request):
     return render(request, 'auditorium.html', {**auditoriumContext, **context})
     
 def edit(request, auditoriumId):
-    auditorium = Auditorium.objects.get(pk=auditoriumId)
+    auditorium = get_object_or_404(Auditorium, pk=auditoriumId)
+        
     context = {
         'auditorium': auditorium,
     }

@@ -1,6 +1,6 @@
 # Create your views here.
 
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Event
 
@@ -30,7 +30,8 @@ def dashboard(request):
     return render(request, 'dashboard.html', {**eventContext, **context})
     
 def edit(request, eventId):
-    event = Event.objects.get(pk=eventId)
+    event = get_object_or_404(Event, pk=eventId)
+    
     context = {
         'event': event,
     }
