@@ -25,7 +25,7 @@ def add(request):
     elif request.method == 'POST':
         form = AddForm(request.POST or None)
         if form.is_valid():
-            event = form.save()
+            form.save()
             
         events = getEventPage(1)
         
@@ -38,13 +38,32 @@ def edit(request, eventId):
     if request.method == 'GET':
         return getEditForm(request, eventId)
     elif request.method == 'POST':
-        return# ...
+        form = EditForm(request.POST or None)
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.id = eventId
+            event.save()
+            
+        events = getEventPage(1)
+        
+        context = {
+            'events': events,
+        }
+        return render(request, 'eventTable.html', {**eventContext, **context})
     
 def delete(request, eventId):
     if request.method == 'GET':
         return getDeleteForm(request, eventId)
     elif request.method == 'POST':
-        return# ...
+        event = Event.objects.get(pk=eventId)
+        event.delete()
+        
+        events = getEventPage(1)
+        
+        context = {
+            'events': events,
+        }
+        return render(request, 'eventTable.html', {**eventContext, **context})
     
 def statistics(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
