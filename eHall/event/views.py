@@ -27,7 +27,7 @@ def add(request):
         if form.is_valid():
             event = form.save()
             ticketList = []
-            for i in range(1, event.nbTickets):
+            for i in range(event.nbTickets):
                 ticket = Ticket(
                     event = event,
                     price = event.ticketPrice,
