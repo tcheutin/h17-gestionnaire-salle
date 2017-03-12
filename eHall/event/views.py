@@ -13,7 +13,7 @@ eventContext = {
 def dashboard(request):
     if request.user.is_authenticated():
         page = request.GET.get('page')
-        events = getEventPage(page)
+        events = getEventPage(request, page)
 
         context = {
             'events': events,
@@ -122,8 +122,9 @@ def getDeleteForm(request, eventId):
     }
     return render(request, 'deleteForm.html', {**eventContext, **context})
     
-def getEventPage(page):
-    events = Event.objects.order_by('-id')
+def getEventPage(request, page):
+    user = request.user
+    events = Event.objects.all().order_by('-id') if request.user.is_superuser else Event.objects.filter(creator=user.id).order_by('-id')
     paginator = Paginator(events, 10) # Show 10 events per page
     
     try:
