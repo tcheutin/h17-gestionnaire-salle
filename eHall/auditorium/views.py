@@ -1,6 +1,6 @@
 # Create your views here.
 
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Auditorium
 from .forms import *
@@ -11,25 +11,28 @@ auditoriumContext = {
 }
 
 def auditorium(request):
-    auditoriums = Auditorium.objects.all()
-    paginator = Paginator(auditoriums, 10) # Show 10 auditoriums per page
-    
-    page = request.GET.get('page')
-    try:
-        # Display the requested page
-        auditoriums = paginator.page(page)
-    except PageNotAnInteger:
-        # Display the first page if no valid page argument is provided
-        auditoriums = paginator.page(1)
-    except EmptyPage:
-        # Display the last page if the requested range exceeds the number of entries
-        auditoriums = paginator.page(paginator.num_pages)
-        
-    context = {
-        'auditoriums': auditoriums,
-    }  
-    return render(request, 'auditorium.html', {**auditoriumContext, **context})
-    
+    if request.user.is_authenticated():
+        auditoriums = Auditorium.objects.all()
+        paginator = Paginator(auditoriums, 10) # Show 10 auditoriums per page
+
+        page = request.GET.get('page')
+        try:
+            # Display the requested page
+            auditoriums = paginator.page(page)
+        except PageNotAnInteger:
+            # Display the first page if no valid page argument is provided
+            auditoriums = paginator.page(1)
+        except EmptyPage:
+            # Display the last page if the requested range exceeds the number of entries
+            auditoriums = paginator.page(paginator.num_pages)
+
+        context = {
+            'auditoriums': auditoriums,
+        }
+        return render(request, 'auditorium.html', {**auditoriumContext, **context})
+    else:
+        return redirect("/login")
+
 def add(request):
     if request.method == 'GET':
         return getAddForm(request)

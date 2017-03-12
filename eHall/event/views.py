@@ -1,6 +1,6 @@
 # Create your views here.
 
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Event, Ticket
 from .forms import *
@@ -11,14 +11,17 @@ eventContext = {
 }
 
 def dashboard(request):
-    page = request.GET.get('page')
-    events = getEventPage(page)
-        
-    context = {
-        'events': events,
-    }
-    return render(request, 'dashboard.html', {**eventContext, **context})
-    
+    if request.user.is_authenticated():
+        page = request.GET.get('page')
+        events = getEventPage(page)
+
+        context = {
+            'events': events,
+        }
+        return render(request, 'dashboard.html', {**eventContext, **context})
+    else:
+        return redirect("/login")
+
 def add(request):
     if request.method == 'GET':
         return getAddForm(request)
