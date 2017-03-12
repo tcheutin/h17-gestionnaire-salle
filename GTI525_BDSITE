@@ -17,6 +17,7 @@ event : Lié a event:id Int[11]
 price : float[11]
 isReserved : VarChar[20]
 isSold : VarChar[20]
+detenteur : VarChar[120]
 }
 
 class Event {
