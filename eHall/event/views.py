@@ -47,11 +47,10 @@ def edit(request, eventId):
     if request.method == 'GET':
         return getEditForm(request, eventId)
     elif request.method == 'POST':
-        form = EditForm(request.POST or None)
+        event = Event.objects.get(pk=eventId)
+        form = EditForm(request.POST or None, instance=event)
         if form.is_valid():
-            event = form.save(commit=False)
-            event.id = eventId
-            event.save()
+            form.save()
             
         events = getEventPage(1)
         

@@ -51,11 +51,10 @@ def edit(request, auditoriumId):
     if request.method == 'GET':
         return getEditForm(request, auditoriumId)
     elif request.method == 'POST':
-        form = EditForm(request.POST or None)
+        auditorium = Auditorium.objects.get(pk=auditoriumId)
+        form = EditForm(request.POST or None, instance=auditorium)
         if form.is_valid():
-            auditorium = form.save(commit=False)
-            auditorium.id = auditoriumId
-            auditorium.save()
+            form.save()
             
         auditoriums = getAuditoriumPage(1)
         
