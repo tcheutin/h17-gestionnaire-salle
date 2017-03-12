@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 from datetime import datetime
 
 # Create your models here.
@@ -23,6 +24,7 @@ class Event(models.Model):
     nbTickets = models.IntegerField(default=0)
     ticketPrice = models.IntegerField(default=0)
     auditorium = models.ForeignKey('auditorium.Auditorium', null=True, on_delete=models.SET_NULL)
+    creator = models.ForeignKey(User)
 
     # Metadata
     class Meta:
