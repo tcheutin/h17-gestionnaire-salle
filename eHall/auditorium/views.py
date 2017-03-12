@@ -2,7 +2,9 @@
 
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from datetime import datetime
 from .models import Auditorium
+from event.models import Event
 from .forms import *
 
 # Set the active attribute to activate the appropriate navbar button
@@ -75,6 +77,15 @@ def delete(request, auditoriumId):
             'auditoriums': auditoriums,
         }
         return render(request, 'auditoriumTable.html', {**auditoriumContext, **context})
+        
+def events(request, auditoriumId):
+    auditorium = get_object_or_404(Auditorium, pk=auditoriumId)
+    upcomingEvents = Event.objects.filter(auditorium=auditorium, startDate__gt=datetime.now()).order_by('startDate')
+    
+    context = {
+        'events': upcomingEvents,
+    }
+    return render(request, 'eventView.html', {**auditoriumContext, **context})
     
 def getAddForm(request):
     form = AddForm()

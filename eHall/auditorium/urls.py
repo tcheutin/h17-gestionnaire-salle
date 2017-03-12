@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^add/$', views.add, name='add'),
     url(r'^(?P<auditoriumId>[0-9]+)/edit/$', views.edit, name='edit'),
     url(r'^(?P<auditoriumId>[0-9]+)/delete/$', views.delete, name='delete'),
+    url(r'^(?P<auditoriumId>[0-9]+)/events/$', views.events, name='events'),
 ]

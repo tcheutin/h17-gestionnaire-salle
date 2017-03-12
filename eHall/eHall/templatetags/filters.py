@@ -1,4 +1,5 @@
 from django import template
+from datetime import date
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
@@ -15,3 +16,7 @@ def formatInteger(value):
 @register.filter(name='ratio')
 def ratio(value, arg):
     return value / arg * 100
+    
+@register.filter(name='date')
+def formatDate(value):
+    return '{:%Y-%m-%d}'.format(value.date())

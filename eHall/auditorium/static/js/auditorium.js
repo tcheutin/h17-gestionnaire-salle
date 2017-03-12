@@ -40,6 +40,16 @@ $(function() {
         });
     });
     
+    $('#events').on('show.bs.modal', function() {        
+        $.ajax({
+            'url': '/auditorium/'.concat(auditoriumId, '/events/'),
+            'method': 'GET',
+            'success': function(response){
+                $('#event-view').html(response);
+            }
+        });
+    });
+    
     $('#add-button').on('click', function() {
         var form = $('#add-form')[0];
         var formData = new FormData(form);
