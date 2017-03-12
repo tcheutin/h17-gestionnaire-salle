@@ -40,6 +40,8 @@ def add(request):
         form = AddForm(request.POST or None)
         if form.is_valid():
             auditorium = form.save()
+            auditorium.creator = request.user
+            auditorium.save()
             
         auditoriums = getAuditoriumPage(1)
         

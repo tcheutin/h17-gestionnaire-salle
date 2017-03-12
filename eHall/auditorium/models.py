@@ -1,5 +1,6 @@
 # coding=utf-8
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -18,6 +19,7 @@ class Auditorium(models.Model):
     city = models.CharField(max_length=50, default='', help_text="Enter a city.")
     province = models.CharField(max_length=50, default='', help_text="Enter a province.")
     capacity = models.IntegerField(default=0)
+    creator = models.ForeignKey(User)
 
     class Meta:
         ordering = ["status"]

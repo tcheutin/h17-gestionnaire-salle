@@ -29,6 +29,8 @@ def add(request):
         form = AddForm(request.POST or None)
         if form.is_valid():
             event = form.save()
+            event.creator = request.user
+            event.save()
             ticketList = []
             for i in range(event.nbTickets):
                 ticket = Ticket(
