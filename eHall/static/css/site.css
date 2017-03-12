@@ -80,7 +80,10 @@ body {
     }
 }
 
-.table, h3 {
+.table tbody tr {
+    background-color: #fff
+}
+.table th, h3 {
     color: #fff;
 }
 
