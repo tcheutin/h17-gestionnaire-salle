@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from accounts.views import (login_view, register_view, logout_view)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -23,4 +22,3 @@ urlpatterns = [
     url(r'^event/', include('event.urls')),
     url(r'^auditorium/', include('auditorium.urls')),
 ]
-
