@@ -2,7 +2,6 @@ from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.shortcuts import render, redirect
 from .forms import UserLoginForm, UserRegisterForm
 
-# @login_required(login_url="/login")
 def login_view(request):
     if(request.user.is_authenticated()):
         return redirect("/event")
