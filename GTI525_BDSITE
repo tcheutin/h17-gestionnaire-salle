@@ -43,4 +43,11 @@ email : VarChar[120]
 passwordHash : VarChar[120]
 }
 
+Class Terminal {
+(CléP) id : Int[11] *AutoI, Unique*
+token : VarChar[90]
+status : VarChar[30]
+ipAddress : Varchar[30] *NonNull*
+}
+
 @enduml
