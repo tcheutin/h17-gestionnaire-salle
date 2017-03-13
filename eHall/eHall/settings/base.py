@@ -35,9 +35,9 @@ INSTALLED_APPS = [
     'accounts',
     'api',
     'crispy_forms',
+    'bootstrap_pagination',
     'rest_framework',
     'rest_framework_api_key',
-    'bootstrap_pagination',
 ]
 
 MIDDLEWARE = [

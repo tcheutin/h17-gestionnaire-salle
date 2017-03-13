@@ -2,7 +2,9 @@
 
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from datetime import datetime
 from .models import Auditorium
+from event.models import Event
 from .forms import *
 
 # Set the active attribute to activate the appropriate navbar button
@@ -43,14 +45,13 @@ def edit(request, auditoriumId):
     if request.method == 'GET':
         return getEditForm(request, auditoriumId)
     elif request.method == 'POST':
-        form = EditForm(request.POST or None)
+        auditorium = Auditorium.objects.get(pk=auditoriumId)
+        form = EditForm(request.POST or None, instance=auditorium)
         if form.is_valid():
-            auditorium = form.save(commit=False)
-            auditorium.id = auditoriumId
-            auditorium.save()
+            form.save()
             
         auditoriums = getAuditoriumPage(request, 1)
-        
+
         context = {
             'auditoriums': auditoriums,
         }
@@ -62,13 +63,22 @@ def delete(request, auditoriumId):
     elif request.method == 'POST':
         auditorium = Auditorium.objects.get(pk=auditoriumId)
         auditorium.delete()
-        
+
         auditoriums = getAuditoriumPage(request, 1)
-        
+
         context = {
             'auditoriums': auditoriums,
         }
         return render(request, 'auditoriumTable.html', {**auditoriumContext, **context})
+        
+def events(request, auditoriumId):
+    auditorium = get_object_or_404(Auditorium, pk=auditoriumId)
+    upcomingEvents = Event.objects.filter(auditorium=auditorium, startDate__gt=datetime.now()).order_by('startDate')
+    
+    context = {
+        'events': upcomingEvents,
+    }
+    return render(request, 'eventView.html', {**auditoriumContext, **context})
     
 def getAddForm(request):
     form = AddForm()
@@ -95,7 +105,7 @@ def getDeleteForm(request, auditoriumId):
         'auditorium': auditorium,
     }
     return render(request, 'deleteForm.html', {**auditoriumContext, **context})
-    
+
 def getAuditoriumPage(request, page):
     user = request.user
     auditoriums = Auditorium.objects.all().order_by('-id') if request.user.is_superuser else Auditorium.objects.filter(creator=user.id).order_by('-id')

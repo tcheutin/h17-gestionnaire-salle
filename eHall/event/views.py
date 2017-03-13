@@ -1,5 +1,4 @@
 # Create your views here.
-
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Event, Ticket
@@ -31,6 +30,7 @@ def add(request):
             event = form.save()
             event.creator = request.user
             event.save()
+
             ticketList = []
             for i in range(event.nbTickets):
                 ticket = Ticket(
@@ -40,7 +40,7 @@ def add(request):
                 ticketList.append(ticket)
                 
             Ticket.objects.bulk_create(ticketList)
-            
+
         events = getEventPage(request, 1)
         
         context = {
@@ -52,11 +52,10 @@ def edit(request, eventId):
     if request.method == 'GET':
         return getEditForm(request, eventId)
     elif request.method == 'POST':
-        form = EditForm(request.POST or None)
+        event = Event.objects.get(pk=eventId)
+        form = EditForm(request.POST or None, instance=event)
         if form.is_valid():
-            event = form.save(commit=False)
-            event.id = eventId
-            event.save()
+            form.save()
             
         events = getEventPage(request, 1)
         
@@ -71,7 +70,7 @@ def delete(request, eventId):
     elif request.method == 'POST':
         event = Event.objects.get(pk=eventId)
         event.delete()
-        
+
         events = getEventPage(request, 1)
         
         context = {
@@ -121,7 +120,7 @@ def getDeleteForm(request, eventId):
         'event': event,
     }
     return render(request, 'deleteForm.html', {**eventContext, **context})
-    
+
 def getEventPage(request, page):
     user = request.user
     events = Event.objects.all().order_by('-id') if request.user.is_superuser else Event.objects.filter(creator=user.id).order_by('-id')
