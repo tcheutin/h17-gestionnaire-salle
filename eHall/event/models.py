@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from datetime import datetime
 
-# Create your models here.
+
 class Event(models.Model):
     # To review
     STATUSES = (
@@ -24,7 +24,7 @@ class Event(models.Model):
     nbTickets = models.IntegerField(default=0)
     ticketPrice = models.IntegerField(default=0)
     auditorium = models.ForeignKey('auditorium.Auditorium', null=True, on_delete=models.SET_NULL)
-    creator = models.ForeignKey(User)
+    creator = models.ForeignKey(User, null=True)
 
     # Metadata
     class Meta:
@@ -44,6 +44,13 @@ class Event(models.Model):
         return reverse('event-detail', args=[str(self.id)])
 
 
+class Owner(models.Model):
+    name = models.CharField(max_length=50, default='')
+
+    def __str__(self):
+        return self.id
+
+
 import uuid # Required for unique ticket instances
 
 class Ticket(models.Model):
@@ -53,7 +60,8 @@ class Ticket(models.Model):
     isReserved = models.BooleanField(default=False)
     isSold = models.BooleanField(default=False)
     isUsed = models.BooleanField(default=False)
-    
+    owner = models.ForeignKey(Owner, default='')
+
     def __str__(self):
         """
         String for representing the Model object (in Admin site etc.)

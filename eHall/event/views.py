@@ -1,5 +1,3 @@
-# Create your views here.
-
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Event, Ticket
@@ -38,16 +36,16 @@ def add(request):
                     price = event.ticketPrice,
                 )
                 ticketList.append(ticket)
-                
+
             Ticket.objects.bulk_create(ticketList)
-            
+
         events = getEventPage(1)
-        
+
         context = {
             'events': events,
         }
         return render(request, 'eventTable.html', {**eventContext, **context})
-    
+
 def edit(request, eventId):
     if request.method == 'GET':
         return getEditForm(request, eventId)
@@ -57,37 +55,37 @@ def edit(request, eventId):
             event = form.save(commit=False)
             event.id = eventId
             event.save()
-            
+
         events = getEventPage(1)
-        
+
         context = {
             'events': events,
         }
         return render(request, 'eventTable.html', {**eventContext, **context})
-    
+
 def delete(request, eventId):
     if request.method == 'GET':
         return getDeleteForm(request, eventId)
     elif request.method == 'POST':
         event = Event.objects.get(pk=eventId)
         event.delete()
-        
+
         events = getEventPage(1)
-        
+
         context = {
             'events': events,
         }
         return render(request, 'eventTable.html', {**eventContext, **context})
-    
+
 def statistics(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
     tickets = Ticket.objects.filter(event=event)
     ticketsSold = tickets.filter(isSold=True)
-    
+
     numTickets = tickets.count()
     numTicketsSold = ticketsSold.count()
     numTicketsUsed = ticketsSold.filter(isUsed=True).count()
-    
+
     context = {
         'event': event,
         'tickets': numTickets,
@@ -95,38 +93,38 @@ def statistics(request, eventId):
         'ticketsUsed': numTicketsUsed,
     }
     return render(request, 'statisticsView.html', {**eventContext, **context})
-    
+
 def getAddForm(request):
     form = AddForm()
-        
+
     context = {
         'form': form,
     }
     return render(request, 'addForm.html', {**eventContext, **context})
-    
+
 def getEditForm(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
     form = EditForm(instance=event)
-    
+
     context = {
         'event': event,
         'form': form,
     }
     return render(request, 'editForm.html', {**eventContext, **context})
-    
+
 def getDeleteForm(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
-    
+
     context = {
         'event': event,
     }
     return render(request, 'deleteForm.html', {**eventContext, **context})
-    
+
 def getEventPage(request, page):
     user = request.user
     events = Event.objects.all().order_by('-id') if request.user.is_superuser else Event.objects.filter(creator=user.id).order_by('-id')
     paginator = Paginator(events, 10) # Show 10 events per page
-    
+
     try:
         # Display the requested page
         events = paginator.page(page)
@@ -136,5 +134,5 @@ def getEventPage(request, page):
     except EmptyPage:
         # Display the last page if the requested range exceeds the number of entries
         events = paginator.page(paginator.num_pages)
-        
+
     return events
