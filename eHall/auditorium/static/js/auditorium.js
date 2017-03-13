@@ -39,7 +39,7 @@ $(function() {
             }
         });
     });
-    
+
     $('#events').on('show.bs.modal', function() {        
         $.ajax({
             'url': '/auditorium/'.concat(auditoriumId, '/events/'),
@@ -49,7 +49,7 @@ $(function() {
             }
         });
     });
-    
+
     $('#add-button').on('click', function() {
         var form = $('#add-form')[0];
         var formData = new FormData(form);

@@ -17,6 +17,7 @@ h2 {
     background-color: rgba(245, 245, 245, .7);
     padding: 5px;
     font-size: 10pt;
+    text-align: center;
 }
 
 .progress-bar {
@@ -82,4 +83,15 @@ h2 {
         background-color: inherit;
         border-top: 0 none;
     }
+}
+
+.table tbody tr {
+    background-color: #fff
+}
+.table th, h3 {
+    color: #fff;
+}
+
+#user_form .control-label {
+    color: #fff;
 }

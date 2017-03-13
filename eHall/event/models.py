@@ -1,10 +1,10 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 from datetime import datetime
 
 # Create your models here.
 class Event(models.Model):
-    # To review
     STATUSES = (
         ('i', 'In Progress'),
         ('o', 'Open for Purchase'),
@@ -21,8 +21,9 @@ class Event(models.Model):
     endDate = models.DateTimeField(blank=True, default=timezone.now)
     description = models.TextField(max_length=10000)
     nbTickets = models.IntegerField(default=0)
-    ticketPrice = models.IntegerField(default=0)
+    ticketPrice = models.DecimalField(max_digits=9, decimal_places=2, default=0)
     auditorium = models.ForeignKey('auditorium.Auditorium', null=True, on_delete=models.SET_NULL)
+    creator = models.ForeignKey(User, null=True)
 
     # Metadata
     class Meta:
@@ -52,7 +53,7 @@ class Ticket(models.Model):
     isReserved = models.BooleanField(default=False)
     isSold = models.BooleanField(default=False)
     isUsed = models.BooleanField(default=False)
-    
+
     def __str__(self):
         """
         String for representing the Model object (in Admin site etc.)
