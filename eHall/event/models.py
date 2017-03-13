@@ -46,6 +46,7 @@ import uuid # Required for unique ticket instances
 
 class Ticket(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique Ticket ID')
+    owner = models.CharField(max_length=100, default='', help_text="People")
     event = models.ForeignKey(Event, null=True, on_delete=models.SET_NULL, default='')
     price = models.DecimalField(max_digits=9, decimal_places=2, default=0)
     isReserved = models.BooleanField(default=False)

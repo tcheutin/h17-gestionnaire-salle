@@ -1,0 +1,10 @@
+[
+  {
+    "model": "event.Event",
+    "pk": 1,
+    "fields": {
+      "title": "Ile Sonic",
+      "auditorium": 1
+    }
+  }
+]
