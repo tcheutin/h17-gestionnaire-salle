@@ -24,7 +24,7 @@ class Event(models.Model):
     nbTickets = models.IntegerField(default=0)
     ticketPrice = models.IntegerField(default=0)
     auditorium = models.ForeignKey('auditorium.Auditorium', null=True, on_delete=models.SET_NULL)
-    creator = models.ForeignKey(User)
+    creator = models.ForeignKey(User, null=True)
 
     # Metadata
     class Meta:

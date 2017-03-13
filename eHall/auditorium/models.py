@@ -19,7 +19,7 @@ class Auditorium(models.Model):
     city = models.CharField(max_length=50, default='', help_text="Enter a city.")
     province = models.CharField(max_length=50, default='', help_text="Enter a province.")
     capacity = models.IntegerField(default=0)
-    creator = models.ForeignKey(User)
+    creator = models.ForeignKey(User, null=True)
 
     class Meta:
         ordering = ["status"]

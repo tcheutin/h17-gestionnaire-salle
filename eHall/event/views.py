@@ -41,7 +41,7 @@ def add(request):
                 
             Ticket.objects.bulk_create(ticketList)
             
-        events = getEventPage(1)
+        events = getEventPage(request, 1)
         
         context = {
             'events': events,
@@ -58,7 +58,7 @@ def edit(request, eventId):
             event.id = eventId
             event.save()
             
-        events = getEventPage(1)
+        events = getEventPage(request, 1)
         
         context = {
             'events': events,
@@ -72,7 +72,7 @@ def delete(request, eventId):
         event = Event.objects.get(pk=eventId)
         event.delete()
         
-        events = getEventPage(1)
+        events = getEventPage(request, 1)
         
         context = {
             'events': events,

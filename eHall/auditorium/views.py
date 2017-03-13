@@ -32,7 +32,7 @@ def add(request):
             auditorium.creator = request.user
             auditorium.save()
             
-        auditoriums = getAuditoriumPage(1)
+        auditoriums = getAuditoriumPage(request, 1)
         
         context = {
             'auditoriums': auditoriums,
@@ -49,7 +49,7 @@ def edit(request, auditoriumId):
             auditorium.id = auditoriumId
             auditorium.save()
             
-        auditoriums = getAuditoriumPage(1)
+        auditoriums = getAuditoriumPage(request, 1)
         
         context = {
             'auditoriums': auditoriums,
@@ -63,7 +63,7 @@ def delete(request, auditoriumId):
         auditorium = Auditorium.objects.get(pk=auditoriumId)
         auditorium.delete()
         
-        auditoriums = getAuditoriumPage(1)
+        auditoriums = getAuditoriumPage(request, 1)
         
         context = {
             'auditoriums': auditoriums,
