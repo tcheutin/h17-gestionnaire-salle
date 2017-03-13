@@ -1,0 +1,16 @@
+[
+  {
+    "model": "event.Ticket",
+    "fields": {
+      "owner": "Michel Tremblay",
+      "event": "1"
+    }
+  },
+  {
+    "model": "event.Ticket",
+    "fields": {
+      "owner": "Michel Tremblay",
+      "event": "1"
+    }
+  }
+]
