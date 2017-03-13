@@ -63,7 +63,25 @@ def edit(request, eventId):
             'events': events,
         }
         return render(request, 'eventTable.html', {**eventContext, **context})
-    
+
+def publish(request, eventId):
+    if request.method == 'GET':
+        return getPublishForm(request, eventId)
+    elif request.method == 'POST':
+        event = Event.objects.get(pk=eventId)
+        form = PublishForm(request.POST or None, instance=event)
+        if form.is_valid():
+            # Incomplete
+            event.status = 'o'
+            event.save()
+
+        events = getEventPage(request, 1)
+
+        context = {
+            'events': events,
+        }
+        return render(request, 'eventTable.html', {**eventContext, **context})
+
 def delete(request, eventId):
     if request.method == 'GET':
         return getDeleteForm(request, eventId)
@@ -112,6 +130,16 @@ def getEditForm(request, eventId):
         'form': form,
     }
     return render(request, 'editForm.html', {**eventContext, **context})
+
+def getPublishForm(request, eventId):
+    event = get_object_or_404(Event, pk=eventId)
+    form = PublishForm(instance=event)
+
+    context = {
+        'event': event,
+        'form': form,
+    }
+    return render(request, 'publishForm.html', {**eventContext, **context})
     
 def getDeleteForm(request, eventId):
     event = get_object_or_404(Event, pk=eventId)

@@ -5,7 +5,6 @@ from datetime import datetime
 
 # Create your models here.
 class Event(models.Model):
-    # To review
     STATUSES = (
         ('i', 'In Progress'),
         ('o', 'Open for Purchase'),
