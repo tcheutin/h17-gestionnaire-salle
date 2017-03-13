@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from api.models import Terminal
-from api.serializers import TerminalSerializer
+from api.serializers import TerminalSerializer, TicketSerializer
 from event.models import Ticket
 
 from datetime import datetime
@@ -16,7 +16,7 @@ from rest_framework import status
 
 class TerminalList(APIView):
     """
-    API endpoint that allows PI to be added.
+    API endpoint that allows PI to be listed and added.
     """
 
     def get(self, request, format=None):
@@ -38,5 +38,5 @@ class TicketList(APIView):
 
     def get(self, request, format=None):
         tickets = Ticket.objects.all()
-        serializer = TerminalSerializer(tickets, many=True)
+        serializer = TicketSerializer(tickets, many=True)
         return Response(serializer.data)

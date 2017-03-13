@@ -6,5 +6,5 @@ from api import views
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     url(r'^api/terminals/$', views.TerminalList.as_view()),
-    url(r'^api/tickets/$', views.TicketList.as_view())
+    url(r'^api/tickets/$', views.TicketList.as_view()),
 ]
