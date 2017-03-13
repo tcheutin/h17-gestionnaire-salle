@@ -31,11 +31,6 @@ def register_view(request):
         login(request, user)
         messages.success(request, "You are now registered!")
         return redirect("/event")
-    else:
-        MESSAGE_TAGS = {
-            messages.ERROR: 'danger'
-        }
-        messages.error(request, "Something happened. Please correct the errors below.")
 
     return render(request, "form.html", {"form": form, "title": title})
 
