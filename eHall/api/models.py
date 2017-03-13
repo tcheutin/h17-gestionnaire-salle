@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from event.models import Event, Ticket
 
 # Create your models here.
 class Terminal(models.Model):
@@ -20,6 +19,3 @@ class Terminal(models.Model):
                                 null=False,
                                 blank=False,
                                 unique=True)
-    
-    def getNbTicketsScanned(self, event):
-        return Ticket.objects.filter(event = event, scannedBy = self).count()

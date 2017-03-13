@@ -42,6 +42,9 @@ class Event(models.Model):
         """
         return reverse('event-detail', args=[str(self.id)])
 
+    def getNbTicketsScanned(self, terminal):
+        return Ticket.objects.filter(event = self, scannedBy_id = terminal).count()
+
 
 import uuid # Required for unique ticket instances
 from api.models import Terminal

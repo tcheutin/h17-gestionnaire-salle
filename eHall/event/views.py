@@ -1,6 +1,7 @@
 # Create your views here.
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from api.models import Terminal
 from .models import Event, Ticket
 from .forms import *
 
@@ -106,14 +107,18 @@ def statistics(request, eventId):
     numTicketsSold = ticketsSold.count()
     numTicketsUsed = ticketsUsed.count()
     
-    terminalsUsed = ticketsUsed.values('scannedBy')
+    terminalsUsed = ticketsUsed.values_list('scannedBy', flat=True).distinct()
+
+    terminals = {}
+    for terminal in terminalsUsed:
+        terminals[terminal] = event.getNbTicketsScanned(terminal)
     
     context = {
         'event': event,
         'tickets': numTickets,
         'ticketsSold': numTicketsSold,
         'ticketsUsed': numTicketsUsed,
-        'terminalsUsed': terminalsUsed,
+        'terminals': terminals,
     }
     return render(request, 'statisticsView.html', {**eventContext, **context})
     
