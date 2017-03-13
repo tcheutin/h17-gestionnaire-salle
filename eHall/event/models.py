@@ -44,6 +44,7 @@ class Event(models.Model):
 
 
 import uuid # Required for unique ticket instances
+from api.models import Terminal
 
 class Ticket(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique Ticket ID')
@@ -52,7 +53,7 @@ class Ticket(models.Model):
     price = models.DecimalField(max_digits=9, decimal_places=2, default=0)
     isReserved = models.BooleanField(default=False)
     isSold = models.BooleanField(default=False)
-    isUsed = models.BooleanField(default=False)
+    scannedBy = models.ForeignKey(Terminal, null=True, on_delete=models.PROTECT)
 
     def __str__(self):
         """

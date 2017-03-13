@@ -100,16 +100,20 @@ def statistics(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
     tickets = Ticket.objects.filter(event=event)
     ticketsSold = tickets.filter(isSold=True)
+    ticketsUsed = ticketsSold.filter(scannedBy__isnull=False)
     
     numTickets = tickets.count()
     numTicketsSold = ticketsSold.count()
-    numTicketsUsed = ticketsSold.filter(isUsed=True).count()
+    numTicketsUsed = ticketsUsed.count()
+    
+    terminalsUsed = ticketsUsed.values('scannedBy')
     
     context = {
         'event': event,
         'tickets': numTickets,
         'ticketsSold': numTicketsSold,
         'ticketsUsed': numTicketsUsed,
+        'terminalsUsed': terminalsUsed,
     }
     return render(request, 'statisticsView.html', {**eventContext, **context})
     
