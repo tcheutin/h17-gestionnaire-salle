@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'api',
     'crispy_forms',
     'rest_framework',
-    'rest_framework_api_key'
+    'rest_framework_api_key',
     'bootstrap_pagination',
 ]
 
