@@ -1,0 +1,20 @@
+{% load filters %}
+
+<div class="container-fluid">
+    <div class="col col-md-12">
+        Tickets Found<span class="pull-right strong"></span>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="{{ tickets }}" aria-valuemin="0" aria-valuemax="{{ event.nbTickets }}" style="width: {{ tickets|ratio:event.nbTickets }}%">{{ tickets }}</div>
+        </div>
+
+        Tickets Sold<span class="pull-right strong"></span>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="{{ ticketsSold }}" aria-valuemin="0" aria-valuemax="{{ event.nbTickets }}" style="width: {{ ticketsSold|ratio:event.nbTickets }}%">{{ ticketsSold }}</div>
+        </div>
+
+        Tickets Scanned<span class="pull-right strong"></span>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="{{ ticketsUsed }}" aria-valuemin="0" aria-valuemax="{{ event.nbTickets }}" style="width: {{ ticketsUsed|ratio:event.nbTickets }}%">{{ ticketsUsed }}</div>
+        </div>
+    </div>
+</div>

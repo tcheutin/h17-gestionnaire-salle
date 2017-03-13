@@ -1,0 +1,6 @@
+{% load crispy_forms_tags %}
+
+<form method="post" id="edit-form">
+    {% csrf_token %}
+    {{ form|crispy }}
+</form>

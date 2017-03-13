@@ -1,0 +1,9 @@
+{% load filters %}
+
+<div class="container-fluid">
+    <div class="col col-md-12">
+        {% for event in events %}
+            {{ event.startDate|date }}: {{ event.name }} ({{ event.artist }})<br />
+        {% endfor %}
+    </div>
+</div>
