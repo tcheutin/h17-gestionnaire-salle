@@ -97,5 +97,5 @@ ENV/
 *.stackdump
 
 # Collected static files
-static/
+staticfiles/
 *.gz

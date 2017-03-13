@@ -59,4 +59,3 @@ class Ticket(models.Model):
         String for representing the Model object (in Admin site etc.)
         """
         return self.id
-    
