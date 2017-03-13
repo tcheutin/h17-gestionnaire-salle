@@ -22,7 +22,7 @@ class Event(models.Model):
     endDate = models.DateTimeField(blank=True, default=timezone.now)
     description = models.TextField(max_length=10000)
     nbTickets = models.IntegerField(default=0)
-    ticketPrice = models.IntegerField(default=0)
+    ticketPrice = models.DecimalField(max_digits=9, decimal_places=2, default=0)
     auditorium = models.ForeignKey('auditorium.Auditorium', null=True, on_delete=models.SET_NULL)
     creator = models.ForeignKey(User, null=True)
 
