@@ -29,8 +29,18 @@ $(function() {
             }
         });
     });
-
-    $('#delete').on('show.bs.modal', function() {
+	
+	$('#publish').on('show.bs.modal', function() {        
+        $.ajax({
+            'url': '/event/'.concat(eventId, '/publish/'),
+            'method': 'GET',
+            'success': function(response){
+                $('#publish-body').html(response);
+            }
+        });
+    });
+    
+    $('#delete').on('show.bs.modal', function() {        
         $.ajax({
             'url': '/event/'.concat(eventId, '/delete/'),
             'method': 'GET',
@@ -97,7 +107,23 @@ $(function() {
             }
         });
     });
-
+	
+	$('#publish-button').on('click', function() {
+        var form = $('#publish-form')[0];
+        var formData = new FormData(form);
+        
+        $.ajax({
+            'url': '/event/'.concat(eventId, '/publish/'),
+            'data': formData,
+            'method': 'POST',
+            'contentType': false,
+            'processData': false,
+            'success': function(response){
+                $('#event-table').html(response);
+            }
+        });
+    });
+    
     $('#delete-button').on('click', function() {
         var form = $('#delete-form')[0];
         var formData = new FormData(form);

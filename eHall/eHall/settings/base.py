@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_api_key',
     'bootstrap_pagination',
+    'rest_framework',
+    'rest_framework_api_key',
 ]
 
 MIDDLEWARE = [
