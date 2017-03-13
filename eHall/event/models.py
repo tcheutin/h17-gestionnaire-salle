@@ -17,7 +17,7 @@ class Event(models.Model):
     isPublished = models.BooleanField(default=False)
     isOnSale = models.BooleanField(default=False)
     date = models.DateTimeField(default=datetime.now, blank=True)
-    duration = models.DurationField() # TODO: verifiy with other team
+    # duration = models.DurationField() # TODO: verifiy with other team
     description = models.TextField(max_length=500, help_text='Enter a brief description of the event')
     auditorium = models.ForeignKey('auditorium.Auditorium', on_delete=models.CASCADE)
 
