@@ -7,7 +7,7 @@ register = template.Library()
 
 @register.filter(name='currency')
 def formatCurrency(value):
-    return locale.currency(value, grouping=True)
+    return '{:,.2f}$'.format(value).translate(str.maketrans(',.', '.,'))
 
 @register.filter(name='bigint')
 def formatInteger(value):
