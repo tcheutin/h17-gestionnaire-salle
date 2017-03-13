@@ -7,7 +7,7 @@ class Terminal(models.Model):
     CONNECTION_STATUS = (('Connected', 'Connected'),
                          ('Ready', 'Ready'))
 
-    id = models.AutoField(primary_key=True )
+    id = models.AutoField(primary_key=True)
 
     status  = models.CharField( max_length=30,
                                 choices=CONNECTION_STATUS,
