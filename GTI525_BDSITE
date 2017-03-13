@@ -8,7 +8,7 @@ address : VarChar[120]
 city : VarChar[60]
 province : VarChar[60]
 capacity : Int[11] *NonNull*
-creator : Lié a utilisateur:id Int[11]
+creator : Lié à utilisateur:id Int[11]
 }
 
 class Ticket {
@@ -32,8 +32,8 @@ isOnSale : VarChar[20]
 date : dateTime
 duration : dateTime
 description : text
-auditorium_id : Lié a auditorium:id Int[11]
-creator : Lié a utilisateur:id Int[11]
+auditorium_id : Lié à auditorium:id Int[11]
+creator : Lié à utilisateur:id Int[11]
 ticketPrice : float[11]
 }
 
