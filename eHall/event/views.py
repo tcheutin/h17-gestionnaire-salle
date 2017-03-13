@@ -80,7 +80,7 @@ def statistics(request, eventId):
     
     numTickets = tickets.count()
     numTicketsSold = ticketsSold.count()
-    numTicketsUsed = ticketsSold.filter(isUsed=True).count()
+    numTicketsUsed = ticketsSold.filter(scannedBy__isnull=True).count()
     
     context = {
         'event': event,
