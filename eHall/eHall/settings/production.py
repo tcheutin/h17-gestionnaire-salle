@@ -11,4 +11,5 @@ DATABASES = {
 
 ALLOWED_HOSTS += (
 	'gti525-gestionnaire-salle.herokuapp.com',
+	'powerful-garden-42109.herokuapp.com',
 )

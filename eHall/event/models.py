@@ -3,7 +3,6 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from datetime import datetime
 
-
 class Event(models.Model):
     # To review
     STATUSES = (
@@ -31,11 +30,20 @@ class Event(models.Model):
         ordering = ["startDate", "-name"]
 
     # Methods
+    def get_absolute_url(self):
+         """
+         Returns the url to access a particular instance of MyModelName.
+         """
+         return reverse('model-detail-view', args=[str(self.id)])
+
     def __str__(self):
         """
         String for representing the Model object (in Admin site etc.)
         """
         return self.name
+
+    def __str__(self):
+        return self.ticket
 
     def get_absolute_url(self):
         """
@@ -44,23 +52,16 @@ class Event(models.Model):
         return reverse('event-detail', args=[str(self.id)])
 
 
-class Owner(models.Model):
-    name = models.CharField(max_length=50, default='')
-
-    def __str__(self):
-        return self.id
-
-
 import uuid # Required for unique ticket instances
 
 class Ticket(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique Ticket ID')
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ticket ID')
+    owner = models.CharField(max_length=100, default='', help_text="People")
     event = models.ForeignKey(Event, null=True, on_delete=models.SET_NULL, default='')
     price = models.DecimalField(max_digits=9, decimal_places=2, default=0)
     isReserved = models.BooleanField(default=False)
     isSold = models.BooleanField(default=False)
     isUsed = models.BooleanField(default=False)
-    owner = models.ForeignKey(Owner, default='')
 
     def __str__(self):
         """

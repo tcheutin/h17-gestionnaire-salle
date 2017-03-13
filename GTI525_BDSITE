@@ -1,0 +1,54 @@
+@startuml
+Title BD: Gestion des salles.
+class Auditorium {
+(CléP) id : Int[11] *AutoI*
+nom : VarChar[120]
+status : VarChar[60]
+address : VarChar[120]
+city : VarChar[60]
+province : VarChar[60]
+capacity : Int[11] *NonNull*
+creator : Lié à utilisateur:id Int[11]
+}
+
+class Ticket {
+(CléP) id : Int[11] *AutoI, Unique*
+event : Lié a event:id Int[11]
+price : float[11]
+isReserved : VarChar[20]
+isSold : VarChar[20]
+owner : VarChar[120]
+}
+
+class Event {
+(CléP) id : Int[11] *AutoI, Unique*
+status : VarChar[1]
+title : VarChar[120]
+sticker : VarChar[120]
+imageURL : VarChar[2048]
+artist : VarChar[120]
+isPublished : VarChar[20]
+isOnSale : VarChar[20]
+date : dateTime
+duration : dateTime
+description : text
+auditorium_id : Lié à auditorium:id Int[11]
+creator : Lié à utilisateur:id Int[11]
+ticketPrice : float[11]
+}
+
+class User {
+(CléP) id : Int[11] *AutoI, Unique*
+name : VarChar[120]
+email : VarChar[120]
+passwordHash : VarChar[120]
+}
+
+Class Terminal {
+(CléP) id : Int[11] *AutoI, Unique*
+token : VarChar[90]
+status : VarChar[30]
+ipAddress : Varchar[30] *NonNull*
+}
+
+@enduml
