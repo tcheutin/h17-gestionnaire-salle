@@ -6,11 +6,6 @@ body {
 
 .container {
   border-radius: 15px;
-  background-color: rgba(255, 255, 255, .7);
-}
-
-h2 {
-  color: white;
 }
 
 #footer {

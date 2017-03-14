@@ -1,4 +1,3 @@
-# Create your views here.
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from api.models import Terminal

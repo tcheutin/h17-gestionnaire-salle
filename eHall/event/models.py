@@ -3,7 +3,6 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from datetime import datetime
 
-# Create your models here.
 class Event(models.Model):
     STATUSES = (
         ('i', 'In Progress'),

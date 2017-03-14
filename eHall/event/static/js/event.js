@@ -1,16 +1,16 @@
 $(function() {
     var eventId;
-    
+
     // Set the event ID when a modal is triggered
     $('body').on('click', '[data-toggle="modal"]', function() {
         var callerId = $(this).attr('id');
-        
+
         if(typeof callerId !== "undefined") {
             eventId = callerId.substr(callerId.indexOf('#') + 1);
         }
     });
-    
-    $('#add').on('show.bs.modal', function() {        
+
+    $('#add').on('show.bs.modal', function() {
         $.ajax({
             'url': '/event/add/',
             'method': 'GET',
@@ -19,8 +19,8 @@ $(function() {
             }
         });
     });
-    
-    $('#edit').on('show.bs.modal', function() {        
+
+    $('#edit').on('show.bs.modal', function() {
         $.ajax({
             'url': '/event/'.concat(eventId, '/edit/'),
             'method': 'GET',
@@ -49,8 +49,8 @@ $(function() {
             }
         });
     });
-    
-    $('#statistics').on('show.bs.modal', function() {        
+
+    $('#statistics').on('show.bs.modal', function() {
         $.ajax({
             'url': '/event/'.concat(eventId, '/statistics/'),
             'method': 'GET',
@@ -59,7 +59,7 @@ $(function() {
             }
         });
     });
-    
+
     $('#add-button').on('click', function() {
         var form = $('#add-form')[0];
         var formData = new FormData(form);
@@ -67,7 +67,7 @@ $(function() {
         //if(typeof image !== 'undefined') {
         //    formData.append('image', image);
         //} // TODO support image upload
-        
+
         $.ajax({
             'url': '/event/add/',
             'data': formData,
@@ -76,10 +76,14 @@ $(function() {
             'processData': false,
             'success': function(response){
                 $('#event-table').html(response);
+                alert("Event added.");
+            },
+            error: function(){
+                alert('Error occured. Could not add the event.');
             }
         });
     });
-    
+
     $('#edit-button').on('click', function() {
         var form = $('#edit-form')[0];
         var formData = new FormData(form);
@@ -87,7 +91,7 @@ $(function() {
         //if(typeof image !== 'undefined') {
         //    formData.append('image', image);
         //} // TODO support image upload
-        
+
         $.ajax({
             'url': '/event/'.concat(eventId, '/edit/'),
             'data': formData,
@@ -96,6 +100,10 @@ $(function() {
             'processData': false,
             'success': function(response){
                 $('#event-table').html(response);
+                alert("Event edited.");
+            },
+            error: function(){
+                alert('Error occured. Could not edit the event.');
             }
         });
     });
@@ -119,7 +127,7 @@ $(function() {
     $('#delete-button').on('click', function() {
         var form = $('#delete-form')[0];
         var formData = new FormData(form);
-        
+
         $.ajax({
             'url': '/event/'.concat(eventId, '/delete/'),
             'data': formData,
@@ -128,6 +136,10 @@ $(function() {
             'processData': false,
             'success': function(response){
                 $('#event-table').html(response);
+                alert("Event deleted.");
+            },
+            error: function(){
+                alert('Error occured. Could not delete the event.');
             }
         });
     });

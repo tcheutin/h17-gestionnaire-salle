@@ -2,17 +2,15 @@
 {%load crispy_forms_tags %}
 
 {% block content %}
-
-    <div id="user_form" class="container">
-        <hr/>
-        <div class='col-sm-6 col-sm-offset-3'>
-            <form method='POST' action='' enctype='multipart/form-data'>
-                {% csrf_token %}
-                {{ form|crispy}}
-                <br>
-                <input type='submit' class='btn btn-success' value={{ title }} />
-            </form>
-        </div>
+<div id="user_form" class="container">
+    <hr/>
+    <div class='col-sm-6 col-sm-offset-3'>
+        <form method='POST' action='' enctype='multipart/form-data'>
+            {% csrf_token %}
+            {{ form|crispy}}
+            <br>
+            <input type='submit' class='btn btn-success' value={{ title }} />
+        </form>
     </div>
-
+</div>
 {% endblock content %}

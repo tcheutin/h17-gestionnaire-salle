@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.shortcuts import render, redirect
 from .forms import UserLoginForm, UserRegisterForm
+from django.contrib import messages
 
 def login_view(request):
     if(request.user.is_authenticated()):
@@ -28,6 +29,7 @@ def register_view(request):
         user.save()
         user = authenticate(username=user.username, password=password)
         login(request, user)
+        messages.success(request, "You are now registered!")
         return redirect("/event")
 
     return render(request, "form.html", {"form": form, "title": title})
