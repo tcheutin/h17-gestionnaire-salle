@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^', include('accounts.urls')),
     url(r'^event/', include('event.urls')),
     url(r'^auditorium/', include('auditorium.urls')),
+    url(r'^terminal/', include('terminal.urls')),
     url(r'^', include('api.urls')),
 ]

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load bootstrap_pagination %}
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+        <div class="col-md-12">
+					<h3>Bornes</h3>
+
+					<div id="auditorium-table">
+						{% include "terminalTable.html" %}
+					</div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/terminal.js' %}"></script>
+{% endblock %}

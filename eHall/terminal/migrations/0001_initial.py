@@ -17,8 +17,6 @@ class Migration(migrations.Migration):
             name='Terminal',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('status', models.CharField(choices=[('Connected', 'Connected'), ('Ready', 'Ready')], default='Connected', max_length=30)),
-                ('address', models.CharField(max_length=30, unique=True)),
             ],
         ),
     ]

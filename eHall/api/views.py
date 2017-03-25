@@ -11,8 +11,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-# from django.contrib.auth.models import User, Group
-
 
 class TerminalList(APIView):
     """
@@ -37,6 +35,18 @@ class TicketList(APIView):
     """
 
     def get(self, request, format=None):
-        tickets = Ticket.objects.all()
-        serializer = TicketSerializer(tickets, many=True)
-        return Response(serializer.data)
+        # TODO : Add check if event ready to be check
+        address = request.META.get('HTTP_IPADDRESS')
+        if address is not None:
+
+            terminal = Terminal.objects.raw('SELECT * FROM api_terminal WHERE "address"=%s', [address])
+            if len(list(terminal)) == 1:
+                print("Terminal " + str(terminal[0].address) + " request tickets.")
+
+                tickets = Ticket.objects.raw('SELECT * FROM event_ticket WHERE "event_id"=%s', [terminal[0].event_id])
+                if len(list(tickets)) != 0:
+                    serializer = TicketSerializer(tickets, many=True)
+
+                    return Response(serializer.data)
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_400_BAD_REQUEST)

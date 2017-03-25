@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'eHall',
     'accounts',
     'api',
+    'terminal',
     'crispy_forms',
     'bootstrap_pagination',
     'rest_framework',

@@ -1,4 +1,3 @@
-# from django.contrib.auth.models import User, Group
 from api.models import Terminal
 from event.models import Ticket, Event
 from auditorium.models import Auditorium
@@ -22,6 +21,7 @@ class EventSerializer(serializers.ModelSerializer):
         fields = ('title', 'auditorium')
 
 ## MISSING TIME
+# TODO : Add closing time
 class TicketSerializer(serializers.ModelSerializer):
     # validationTerminal = TerminalSerializer(read_only=True)
     event = EventSerializer(read_only=True)
