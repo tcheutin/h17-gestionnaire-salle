@@ -33,4 +33,4 @@ class TicketSerializer(serializers.ModelSerializer):
 class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
-        fields = ('httpResponse', 'ticketHash' ,'time')
+        fields = ('terminal','httpResponse', 'ticketHash' ,'time')

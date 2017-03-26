@@ -16,3 +16,4 @@ waitress==1.0.2
 whitenoise==3.3.0
 djangorestframework==3.5.4
 drfapikey==0.0.3
+requests==2.13.0
