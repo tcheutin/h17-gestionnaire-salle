@@ -34,3 +34,8 @@ class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
         fields = ('terminal','httpResponse', 'ticketHash' ,'time')
+
+class ClosingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ('id', 'isClose')
