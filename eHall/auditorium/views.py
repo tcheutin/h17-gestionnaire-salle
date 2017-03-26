@@ -1,5 +1,3 @@
-# Create your views here.
-
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import datetime
@@ -33,14 +31,14 @@ def add(request):
             auditorium = form.save()
             auditorium.creator = request.user
             auditorium.save()
-            
+
         auditoriums = getAuditoriumPage(request, 1)
-        
+
         context = {
             'auditoriums': auditoriums,
         }
         return render(request, 'auditoriumTable.html', {**auditoriumContext, **context})
-    
+
 def edit(request, auditoriumId):
     if request.method == 'GET':
         return getEditForm(request, auditoriumId)
@@ -49,14 +47,14 @@ def edit(request, auditoriumId):
         form = EditForm(request.POST or None, instance=auditorium)
         if form.is_valid():
             form.save()
-            
+
         auditoriums = getAuditoriumPage(request, 1)
 
         context = {
             'auditoriums': auditoriums,
         }
         return render(request, 'auditoriumTable.html', {**auditoriumContext, **context})
-    
+
 def delete(request, auditoriumId):
     if request.method == 'GET':
         return getDeleteForm(request, auditoriumId)
@@ -70,37 +68,37 @@ def delete(request, auditoriumId):
             'auditoriums': auditoriums,
         }
         return render(request, 'auditoriumTable.html', {**auditoriumContext, **context})
-        
+
 def events(request, auditoriumId):
     auditorium = get_object_or_404(Auditorium, pk=auditoriumId)
     upcomingEvents = Event.objects.filter(auditorium=auditorium, startDate__gt=datetime.now()).order_by('startDate')
-    
+
     context = {
         'events': upcomingEvents,
     }
     return render(request, 'eventView.html', {**auditoriumContext, **context})
-    
+
 def getAddForm(request):
     form = AddForm()
-        
+
     context = {
         'form': form,
     }
     return render(request, 'addForm.html', {**auditoriumContext, **context})
-    
+
 def getEditForm(request, auditoriumId):
     auditorium = get_object_or_404(Auditorium, pk=auditoriumId)
     form = EditForm(instance=auditorium)
-    
+
     context = {
         'auditorium': auditorium,
         'form': form,
     }
     return render(request, 'editForm.html', {**auditoriumContext, **context})
-    
+
 def getDeleteForm(request, auditoriumId):
     auditorium = get_object_or_404(Auditorium, pk=auditoriumId)
-    
+
     context = {
         'auditorium': auditorium,
     }
@@ -120,6 +118,5 @@ def getAuditoriumPage(request, page):
     except EmptyPage:
         # Display the last page if the requested range exceeds the number of entries
         auditoriums = paginator.page(paginator.num_pages)
-        
+
     return auditoriums
-    
