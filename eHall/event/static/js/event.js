@@ -39,6 +39,16 @@ $(function() {
             }
         });
     });
+	
+	$('#close').on('show.bs.modal', function() {        
+        $.ajax({
+            'url': '/event/'.concat(eventId, '/close/'),
+            'method': 'GET',
+            'success': function(response){
+                $('#close-body').html(response);
+            }
+        });
+    });
     
     $('#delete').on('show.bs.modal', function() {        
         $.ajax({
@@ -120,6 +130,26 @@ $(function() {
             'processData': false,
             'success': function(response){
                 $('#event-table').html(response);
+            }
+        });
+    });
+	
+	$('#close-button').on('click', function() {
+        var form = $('#close-form')[0];
+        var formData = new FormData(form);
+
+        $.ajax({
+            'url': '/event/'.concat(eventId, '/close/'),
+            'data': formData,
+            'method': 'POST',
+            'contentType': false,
+            'processData': false,
+            'success': function(response){
+                $('#event-table').html(response);
+                alert("Event closed.");
+            },
+            error: function(){
+                alert('Error occured. Could not close the event.');
             }
         });
     });
