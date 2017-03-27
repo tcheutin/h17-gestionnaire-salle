@@ -8,6 +8,7 @@ from django.http import HttpResponse
 
 from api.models import Terminal
 from event.models import Event
+from report.models import Report
 # Create your views here.
 
 # TODO : setEvent ->
@@ -53,10 +54,10 @@ def SetEvent(request):
 def SetLaunch(request):
     print("Set launch for ticket scanning or closing")
     if request.user.is_authenticated():
-        event = request.GET.get("id", None)
+        id = request.GET.get("id", None)
         value = request.GET.get("bool", None)
 
-        e = Terminal.objects.get(id=event).event
+        e = Terminal.objects.get(id=id).event
         if (e is not None) & (value is not None):
             e.isClose = True
             if value == "true":
@@ -69,3 +70,19 @@ def SetLaunch(request):
         return redirect("/login")
 
     return HttpResponse("400")
+
+def Logs(request, terminalId):
+    if request.user.is_authenticated():
+        page = request.GET.get('page')
+
+        terminal = Terminal.objects.get(id=terminalId)
+        logs = Report.objects.filter(terminal=terminal)
+        context = {
+            'terminal': terminal,
+            'logs': logs,
+        }
+
+        return render(request, 'logs.html', {**terminalContext, **context})
+
+    else:
+        return redirect("/login")

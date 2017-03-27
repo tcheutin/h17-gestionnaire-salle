@@ -1,0 +1,23 @@
+{% load filters %}
+
+<table class="table table-responsive table-bordred table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Temps</th>
+            <th>Réponse HTTP</th>
+            <th>Hash Billet</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for log in logs %}
+            <tr>
+              <td>{{ log.id }}</td>
+              <td>{{ log.time }}</td>
+              <td>{{ log.httpResponse }}</td>
+              <td>{{ log.ticketHash }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

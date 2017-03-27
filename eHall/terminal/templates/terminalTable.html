@@ -15,7 +15,8 @@
         {% for terminal in terminals %}
             <tr>
               <td>{{ terminal.id }}</td>
-              <td>{{ terminal.address }}</td>
+              <td><a href="/terminal/logs/{{ terminal.id }}">{{ terminal.address }}</a></td>
+              <!-- <td>{{ terminal.address }}</td> -->
               <td>{{ terminal.status }}</td>
               <td>
                 <select id="{{ terminal.id}}" onchange="setEvent(this.id, this)" name="Event">
