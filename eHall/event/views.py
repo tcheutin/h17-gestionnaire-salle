@@ -90,6 +90,16 @@ def statistics(request, eventId):
     }
     return render(request, 'statisticsView.html', {**eventContext, **context})
     
+def getPublishForm(request, eventId):
+    event = get_object_or_404(Event, pk=eventId)
+    form = PublishForm(instance=event)
+    
+    context = {
+        'event': event,
+        'form': form,
+    }
+    return render(request, 'publishForm.html', {**eventContext, **context})
+    
 def getAddForm(request):
     form = AddForm()
         

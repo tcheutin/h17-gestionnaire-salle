@@ -23,6 +23,7 @@ class Event(models.Model):
     nbTickets = models.IntegerField(default=0)
     ticketPrice = models.IntegerField(default=0)
     auditorium = models.ForeignKey('auditorium.Auditorium', null=True, on_delete=models.SET_NULL)
+    retailer = models.ForeignKey(TicketRetailer, null=True, on_delete=models.SET_NULL)
 
     # Metadata
     class Meta:
@@ -58,3 +59,9 @@ class Ticket(models.Model):
         String for representing the Model object (in Admin site etc.)
         """
         return self.id
+        
+class TicketRetailer(models.Model):
+    name = models.CharField(max_length=100, default='', null=False)
+    
+    def __str__(self):
+        return self.name
