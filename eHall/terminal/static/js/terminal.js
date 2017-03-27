@@ -14,7 +14,7 @@ function setEvent(terminalID, select){
 function notifyTerminal(terminalID) {
   console.log("notifyTerminal()" + terminalID.id);
   if (terminalID.innerHTML == "Go!") {
-    terminalID.innerHTML = "Événement terminé!";
+    terminalID.innerHTML = "Event closed.";
     setStatus(terminalID.id, true)
   } else {
     terminalID.innerHTML = "Go!";

@@ -52,7 +52,7 @@ def SetEvent(request):
 
 
 def SetLaunch(request):
-    print("Set launch for ticket scanning or closing")
+    #print("Set launch for ticket scanning or closing")
     if request.user.is_authenticated():
         id = request.GET.get("id", None)
         value = request.GET.get("bool", None)
