@@ -8,6 +8,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -34,6 +35,8 @@ INSTALLED_APPS = [
     'eHall',
     'accounts',
     'api',
+    'terminal',
+    'report',
     'crispy_forms',
     'bootstrap_pagination',
     'rest_framework',
@@ -119,3 +122,12 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 #print("Base dir path: ", BASE_DIR)
 #print("Static root: ", STATIC_ROOT)
+
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'info',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}

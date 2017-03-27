@@ -1,7 +1,7 @@
-# from django.contrib.auth.models import User, Group
 from api.models import Terminal
 from event.models import Ticket, Event
 from auditorium.models import Auditorium
+from report.models import Report
 from rest_framework import serializers
 
 
@@ -19,12 +19,18 @@ class EventSerializer(serializers.ModelSerializer):
     auditorium = AuditoriumSerializer(read_only=True)
     class Meta:
         model = Event
-        fields = ('title', 'auditorium')
+        fields = ('name', 'auditorium')
 
 ## MISSING TIME
+# TODO : Add closing time
 class TicketSerializer(serializers.ModelSerializer):
     # validationTerminal = TerminalSerializer(read_only=True)
     event = EventSerializer(read_only=True)
     class Meta:
         model = Ticket
         fields = ('id', 'owner', 'event')
+
+class ReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Report
+        fields = ('terminal','httpResponse', 'ticketHash' ,'time')

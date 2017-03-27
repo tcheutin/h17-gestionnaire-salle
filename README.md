@@ -42,6 +42,11 @@ Collect static files
 python manage.py collectstatic
 ```
 
+Collect static files
+```bash
+python manage.py collectstatic --settings=eHall.settings.local
+```
+
 Run the server
 ```
 python server.py

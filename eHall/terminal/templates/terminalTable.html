@@ -1,0 +1,23 @@
+{% load filters %}
+
+<table class="table table-responsive table-bordred table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>IP</th>
+            <th>Status</th>
+            <th>Événement</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for terminal in terminals %}
+            <tr>
+                <td>{{ terminal.id }}</td>
+                <td>{{ terminal.address }}</td>
+                <td>{{ terminal.status }}</td>
+                <td>{{ terminal.event }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

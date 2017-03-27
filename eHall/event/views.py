@@ -1,7 +1,6 @@
-# Create your views here.
-
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from api.models import Terminal
 from .models import Event, Ticket
 from .forms import *
 
@@ -11,14 +10,17 @@ eventContext = {
 }
 
 def dashboard(request):
-    page = request.GET.get('page')
-    events = getEventPage(page)
-        
-    context = {
-        'events': events,
-    }
-    return render(request, 'dashboard.html', {**eventContext, **context})
-    
+    if request.user.is_authenticated():
+        page = request.GET.get('page')
+        events = getEventPage(request, page)
+
+        context = {
+            'events': events,
+        }
+        return render(request, 'dashboard.html', {**eventContext, **context})
+    else:
+        return redirect("/login")
+
 def add(request):
     if request.method == 'GET':
         return getAddForm(request)
@@ -26,6 +28,9 @@ def add(request):
         form = AddForm(request.POST or None)
         if form.is_valid():
             event = form.save()
+            event.creator = request.user
+            event.save()
+
             ticketList = []
             for i in range(event.nbTickets):
                 ticket = Ticket(
@@ -35,8 +40,8 @@ def add(request):
                 ticketList.append(ticket)
                 
             Ticket.objects.bulk_create(ticketList)
-            
-        events = getEventPage(1)
+
+        events = getEventPage(request, 1)
         
         context = {
             'events': events,
@@ -52,21 +57,39 @@ def edit(request, eventId):
         if form.is_valid():
             form.save()
             
-        events = getEventPage(1)
+        events = getEventPage(request, 1)
         
         context = {
             'events': events,
         }
         return render(request, 'eventTable.html', {**eventContext, **context})
-    
+
+def publish(request, eventId):
+    if request.method == 'GET':
+        return getPublishForm(request, eventId)
+    elif request.method == 'POST':
+        event = Event.objects.get(pk=eventId)
+        form = PublishForm(request.POST or None, instance=event)
+        if form.is_valid():
+            # Incomplete
+            event.status = 'o'
+            event.save()
+
+        events = getEventPage(request, 1)
+
+        context = {
+            'events': events,
+        }
+        return render(request, 'eventTable.html', {**eventContext, **context})
+
 def delete(request, eventId):
     if request.method == 'GET':
         return getDeleteForm(request, eventId)
     elif request.method == 'POST':
         event = Event.objects.get(pk=eventId)
         event.delete()
-        
-        events = getEventPage(1)
+
+        events = getEventPage(request, 1)
         
         context = {
             'events': events,
@@ -77,16 +100,24 @@ def statistics(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
     tickets = Ticket.objects.filter(event=event)
     ticketsSold = tickets.filter(isSold=True)
+    ticketsUsed = ticketsSold.filter(scannedBy__isnull=False)
     
     numTickets = tickets.count()
     numTicketsSold = ticketsSold.count()
-    numTicketsUsed = ticketsSold.filter(isUsed=True).count()
+    numTicketsUsed = ticketsUsed.count()
+    
+    terminalsUsed = ticketsUsed.values_list('scannedBy', flat=True).distinct()
+
+    terminals = {}
+    for terminal in terminalsUsed:
+        terminals[terminal] = event.getNbTicketsScanned(terminal)
     
     context = {
         'event': event,
         'tickets': numTickets,
         'ticketsSold': numTicketsSold,
         'ticketsUsed': numTicketsUsed,
+        'terminals': terminals,
     }
     return render(request, 'statisticsView.html', {**eventContext, **context})
     
@@ -117,6 +148,16 @@ def getEditForm(request, eventId):
         'form': form,
     }
     return render(request, 'editForm.html', {**eventContext, **context})
+
+def getPublishForm(request, eventId):
+    event = get_object_or_404(Event, pk=eventId)
+    form = PublishForm(instance=event)
+
+    context = {
+        'event': event,
+        'form': form,
+    }
+    return render(request, 'publishForm.html', {**eventContext, **context})
     
 def getDeleteForm(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
@@ -125,9 +166,10 @@ def getDeleteForm(request, eventId):
         'event': event,
     }
     return render(request, 'deleteForm.html', {**eventContext, **context})
-    
-def getEventPage(page):
-    events = Event.objects.order_by('-id')
+
+def getEventPage(request, page):
+    user = request.user
+    events = Event.objects.all().order_by('-id') if request.user.is_superuser else Event.objects.filter(creator=user.id).order_by('-id')
     paginator = Paginator(events, 10) # Show 10 events per page
     
     try:

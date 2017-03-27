@@ -1,5 +1,4 @@
 from django import template
-from datetime import date
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
@@ -7,7 +6,7 @@ register = template.Library()
 
 @register.filter(name='currency')
 def formatCurrency(value):
-    return locale.currency(value, grouping=True)
+    return '{:,.2f}$'.format(value).translate(str.maketrans(',.', '.,'))
 
 @register.filter(name='bigint')
 def formatInteger(value):

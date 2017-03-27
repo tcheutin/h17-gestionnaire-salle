@@ -1,7 +1,7 @@
+from django import forms
 from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
 from .models import Event
-from auditorium.models import Auditorium
 
 class AddForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -26,7 +26,7 @@ class EditForm(ModelForm):
     class Meta:
         model = Event
         fields = ['name', 'artist', 'image', 'startDate', 'endDate', 'description', 'auditorium']
-        
+
 class PublishForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(PublishForm, self).__init__(*args, **kwargs)

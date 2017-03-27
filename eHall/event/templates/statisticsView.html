@@ -11,10 +11,17 @@
         <div class="progress">
             <div class="progress-bar" role="progressbar" aria-valuenow="{{ ticketsSold }}" aria-valuemin="0" aria-valuemax="{{ event.nbTickets }}" style="width: {{ ticketsSold|ratio:event.nbTickets }}%">{{ ticketsSold }}</div>
         </div>
-
+        
         Tickets Scanned<span class="pull-right strong"></span>
         <div class="progress">
             <div class="progress-bar" role="progressbar" aria-valuenow="{{ ticketsUsed }}" aria-valuemin="0" aria-valuemax="{{ event.nbTickets }}" style="width: {{ ticketsUsed|ratio:event.nbTickets }}%">{{ ticketsUsed }}</div>
         </div>
+
+        {% for terminalId, ticketsScanned in terminals.items %}
+            Tickets Scanned: Terminal #{{ terminalId }}<span class="pull-right strong"></span>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{ ticketsScanned }}" aria-valuemin="0" aria-valuemax="{{ event.nbTickets }}" style="width: {{ ticketsScanned|ratio:event.nbTickets }}%">{{ ticketsScanned }}</div>
+            </div>
+        {% endfor %}
     </div>
 </div>

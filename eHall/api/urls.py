@@ -7,4 +7,5 @@ from api import views
 urlpatterns = [
     url(r'^api/terminals/$', views.TerminalList.as_view()),
     url(r'^api/tickets/$', views.TicketList.as_view()),
+    url(r'^api/report/$', views.Report.as_view()),
 ]
