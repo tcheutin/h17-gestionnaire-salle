@@ -72,6 +72,7 @@ def publish(request, eventId):
         form = PublishForm(request.POST or None, instance=event)
         if form.is_valid():
             # Incomplete
+            event = form.save(commit=False)
             event.status = 'o'
             event.save()
 

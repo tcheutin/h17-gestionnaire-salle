@@ -22,7 +22,7 @@ class Event(models.Model):
     nbTickets = models.IntegerField(default=0)
     ticketPrice = models.DecimalField(max_digits=9, decimal_places=2, default=0)
     auditorium = models.ForeignKey('auditorium.Auditorium', null=True, on_delete=models.SET_NULL)
-    retailer = models.ForeignKey(TicketRetailer, null=True, on_delete=models.SET_NULL)
+    retailer = models.ForeignKey('TicketRetailer', null=True, on_delete=models.SET_NULL)
     creator = models.ForeignKey(User, null=True)
 
     # Metadata
