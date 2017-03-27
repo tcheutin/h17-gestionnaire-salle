@@ -1,7 +1,8 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from api.models import Terminal
-from .models import Event, Ticket
+from eHall.models import Ticket
+from .models import Event
 from .forms import *
 
 # Set the active attribute to activate the appropriate navbar button
@@ -72,11 +73,28 @@ def publish(request, eventId):
         form = PublishForm(request.POST or None, instance=event)
         if form.is_valid():
             # Incomplete
+            event = form.save(commit=False)
             event.status = 'o'
             event.save()
 
         events = getEventPage(request, 1)
 
+        context = {
+            'events': events,
+        }
+        return render(request, 'eventTable.html', {**eventContext, **context})
+		
+def close(request, eventId):
+    if request.method == 'GET':
+        return getCloseForm(request, eventId)
+    elif request.method == 'POST':
+		# Incomplete
+		event = Event.objects.get(pk=eventId)
+        event.status = 'c'
+		event.save()
+
+        events = getEventPage(request, 1)
+        
         context = {
             'events': events,
         }
@@ -121,6 +139,16 @@ def statistics(request, eventId):
     }
     return render(request, 'statisticsView.html', {**eventContext, **context})
     
+def getPublishForm(request, eventId):
+    event = get_object_or_404(Event, pk=eventId)
+    form = PublishForm(instance=event)
+    
+    context = {
+        'event': event,
+        'form': form,
+    }
+    return render(request, 'publishForm.html', {**eventContext, **context})
+    
 def getAddForm(request):
     form = AddForm()
         
@@ -148,6 +176,14 @@ def getPublishForm(request, eventId):
         'form': form,
     }
     return render(request, 'publishForm.html', {**eventContext, **context})
+	
+def getCloseForm(request, eventId):
+    event = get_object_or_404(Event, pk=eventId)
+
+    context = {
+        'event': event,
+    }
+    return render(request, 'closeForm.html', {**eventContext, **context})
     
 def getDeleteForm(request, eventId):
     event = get_object_or_404(Event, pk=eventId)

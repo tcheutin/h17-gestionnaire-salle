@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from api.models import Terminal
 from api.serializers import TerminalSerializer, TicketSerializer, ReportSerializer, ClosingSerializer
-from event.models import Ticket
+from eHall.models import Ticket
 from report.models import Report as ReportModel
 from event.models import Event
 
@@ -55,7 +55,7 @@ class TicketList(APIView):
                     if not events[0].isClose:
 
                         tickets = Ticket.objects.raw(
-                            'SELECT * FROM event_ticket WHERE "event_id"=%s',
+                            'SELECT * FROM eHall_ticket WHERE "event_id"=%s',
                             [terminal[0].event_id])
                         if len(list(tickets)) != 0:
                             serializer = TicketSerializer(tickets, many=True)

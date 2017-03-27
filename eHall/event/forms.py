@@ -28,13 +28,6 @@ class EditForm(ModelForm):
         fields = ['name', 'artist', 'image', 'startDate', 'endDate', 'description', 'auditorium']
 
 class PublishForm(ModelForm):
-    SITES = (
-        ('S1', 'WeSellTickets.com'),
-        ('S2', 'GiveUsYourMoney.net'),
-    )
-
-    Site = forms.ChoiceField(choices=SITES)
-
     def __init__(self, *args, **kwargs):
         super(PublishForm, self).__init__(*args, **kwargs)
 
@@ -43,6 +36,5 @@ class PublishForm(ModelForm):
         self.helper = FormHelper(self)
 
     class Meta:
-        # TODO add site field
         model = Event
-        fields = []
+        fields = ['retailer']
