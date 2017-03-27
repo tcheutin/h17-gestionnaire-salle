@@ -10,7 +10,7 @@
     "model": "event.TicketRetailer",
     "pk": 2,
     "fields": {
-      "name": "Vente 2",
+      "name": "Vente 2"
     }
   }
 ]
