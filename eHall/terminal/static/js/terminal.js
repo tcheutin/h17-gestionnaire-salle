@@ -1,22 +1,36 @@
-$(function() {
-    var terminalId;
+function setEvent(terminalID, select){
+  eventID = select.options[select.selectedIndex].value;
+  $.ajax({
+    type: 'GET',
+    url: '/terminal/event/',
+    data: {
+      terminal: terminalID,
+      event: eventID,
+    }
 
-    // Set the terminal ID when a modal is triggered
-    $('body').on('click', '[data-toggle="modal"]', function() {
-        var callerId = $(this).attr('id');
+  });
+}
 
-        if(typeof callerId !== "undefined") {
-            terminalId = callerId.substr(callerId.indexOf('#') + 1);
-        }
-    });
+function notifyTerminal(terminalID) {
+  console.log("notifyTerminal()" + terminalID.id);
+  if (terminalID.innerHTML == "Go!") {
+    terminalID.innerHTML = "Événement terminé!";
+    setStatus(terminalID.id, true)
+  } else {
+    terminalID.innerHTML = "Go!";
+    setStatus(terminalID.id, false)
+  }
+  // document.getElementById("id_Event" + terminalID).disabled = true;
+}
 
-	// $('#publish').on('show.bs.modal', function() {
-  //       $.ajax({
-  //           'url': '/terminal/'.concat(terminalId, '/publish/'),
-  //           'method': 'GET',
-  //           'success': function(response){
-  //               $('#publish-body').html(response);
-  //           }
-  //       });
-  //   });
-});
+function setStatus(id, bool){
+  $.ajax({
+    type: 'GET',
+    url: '/terminal/launch/',
+    data: {
+      id: id,
+      bool: bool,
+    }
+
+  });
+}
