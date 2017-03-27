@@ -1,0 +1,16 @@
+[
+  {
+    "model": "event.TicketRetailer",
+    "pk": 1,
+    "fields": {
+      "name": "Vente 1"
+    }
+  },
+  {
+    "model": "event.TicketRetailer",
+    "pk": 2,
+    "fields": {
+      "name": "Vente 2"
+    }
+  }
+]
