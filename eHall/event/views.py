@@ -39,16 +39,16 @@ def add(request):
                     price = event.ticketPrice,
                 )
                 ticketList.append(ticket)
-                
+
             Ticket.objects.bulk_create(ticketList)
 
         events = getEventPage(request, 1)
-        
+
         context = {
             'events': events,
         }
         return render(request, 'eventTable.html', {**eventContext, **context})
-    
+
 def edit(request, eventId):
     if request.method == 'GET':
         return getEditForm(request, eventId)
@@ -57,9 +57,9 @@ def edit(request, eventId):
         form = EditForm(request.POST or None, instance=event)
         if form.is_valid():
             form.save()
-            
+
         events = getEventPage(request, 1)
-        
+
         context = {
             'events': events,
         }
@@ -83,18 +83,18 @@ def publish(request, eventId):
             'events': events,
         }
         return render(request, 'eventTable.html', {**eventContext, **context})
-		
+
 def close(request, eventId):
     if request.method == 'GET':
         return getCloseForm(request, eventId)
     elif request.method == 'POST':
-		# Incomplete
-		event = Event.objects.get(pk=eventId)
+        # Incomplete
+        event = Event.objects.get(pk=eventId)
         event.status = 'c'
-		event.save()
+        event.save()
 
         events = getEventPage(request, 1)
-        
+
         context = {
             'events': events,
         }
@@ -108,28 +108,28 @@ def delete(request, eventId):
         event.delete()
 
         events = getEventPage(request, 1)
-        
+
         context = {
             'events': events,
         }
         return render(request, 'eventTable.html', {**eventContext, **context})
-    
+
 def statistics(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
     tickets = Ticket.objects.filter(event=event)
     ticketsSold = tickets.filter(isSold=True)
     ticketsUsed = ticketsSold.filter(scannedBy__isnull=False)
-    
+
     numTickets = tickets.count()
     numTicketsSold = ticketsSold.count()
     numTicketsUsed = ticketsUsed.count()
-    
+
     terminalsUsed = ticketsUsed.values_list('scannedBy', flat=True).distinct()
 
     terminals = {}
     for terminal in terminalsUsed:
         terminals[terminal] = event.getNbTicketsScanned(terminal)
-    
+
     context = {
         'event': event,
         'tickets': numTickets,
@@ -138,29 +138,29 @@ def statistics(request, eventId):
         'terminals': terminals,
     }
     return render(request, 'statisticsView.html', {**eventContext, **context})
-    
+
 def getPublishForm(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
     form = PublishForm(instance=event)
-    
+
     context = {
         'event': event,
         'form': form,
     }
     return render(request, 'publishForm.html', {**eventContext, **context})
-    
+
 def getAddForm(request):
     form = AddForm()
-        
+
     context = {
         'form': form,
     }
     return render(request, 'addForm.html', {**eventContext, **context})
-    
+
 def getEditForm(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
     form = EditForm(instance=event)
-    
+
     context = {
         'event': event,
         'form': form,
@@ -176,7 +176,7 @@ def getPublishForm(request, eventId):
         'form': form,
     }
     return render(request, 'publishForm.html', {**eventContext, **context})
-	
+
 def getCloseForm(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
 
@@ -184,10 +184,10 @@ def getCloseForm(request, eventId):
         'event': event,
     }
     return render(request, 'closeForm.html', {**eventContext, **context})
-    
+
 def getDeleteForm(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
-    
+
     context = {
         'event': event,
     }
@@ -197,7 +197,7 @@ def getEventPage(request, page):
     user = request.user
     events = Event.objects.all().order_by('-id') if request.user.is_superuser else Event.objects.filter(creator=user.id).order_by('-id')
     paginator = Paginator(events, 10) # Show 10 events per page
-    
+
     try:
         # Display the requested page
         events = paginator.page(page)
@@ -207,5 +207,5 @@ def getEventPage(request, page):
     except EmptyPage:
         # Display the last page if the requested range exceeds the number of entries
         events = paginator.page(paginator.num_pages)
-        
+
     return events
