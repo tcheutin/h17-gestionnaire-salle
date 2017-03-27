@@ -1,5 +1,6 @@
 from api.models import Terminal
-from event.models import Ticket, Event
+from eHall.models import Ticket
+from event.models import Event
 from auditorium.models import Auditorium
 from report.models import Report
 from rest_framework import serializers

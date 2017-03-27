@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from api.models import Terminal
 from api.serializers import TerminalSerializer, TicketSerializer, ReportSerializer
-from event.models import Ticket
+from eHall.models import Ticket
 from report.models import Report as ReportModel
 
 from datetime import datetime

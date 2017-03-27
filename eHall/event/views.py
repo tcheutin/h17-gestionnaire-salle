@@ -1,7 +1,8 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from api.models import Terminal
-from .models import Event, Ticket
+from eHall.models import Ticket
+from .models import Event
 from .forms import *
 
 # Set the active attribute to activate the appropriate navbar button

@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "manage.py", line 22, in <module>
+    execute_from_command_line(sys.argv)
+  File "C:\Users\Raphael\Envs\ehall\lib\site-packages\django\core\management\__init__.py", line 367, in execute_from_command_line
+    utility.execute()
+  File "C:\Users\Raphael\Envs\ehall\lib\site-packages\django\core\management\__init__.py", line 359, in execute
+    self.fetch_command(subcommand).run_from_argv(self.argv)
+  File "C:\Users\Raphael\Envs\ehall\lib\site-packages\django\core\management\base.py", line 294, in run_from_argv
+    self.execute(*args, **cmd_options)
+  File "C:\Users\Raphael\Envs\ehall\lib\site-packages\django\core\management\base.py", line 345, in execute
+    output = self.handle(*args, **options)
+  File "C:\Users\Raphael\Envs\ehall\lib\site-packages\django\core\management\commands\makemigrations.py", line 149, in handle
+    loader.project_state(),
+  File "C:\Users\Raphael\Envs\ehall\lib\site-packages\django\db\migrations\loader.py", line 317, in project_state
+    return self.graph.make_state(nodes=nodes, at_end=at_end, real_apps=list(self.unmigrated_apps))
+  File "C:\Users\Raphael\Envs\ehall\lib\site-packages\django\db\migrations\graph.py", line 402, in make_state
+    for migration in self.forwards_plan(node):
+  File "C:\Users\Raphael\Envs\ehall\lib\site-packages\django\db\migrations\graph.py", line 280, in forwards_plan
+    self.ensure_not_cyclic(target, lambda x: (parent.key for parent in self.node_map[x].parents))
+  File "C:\Users\Raphael\Envs\ehall\lib\site-packages\django\db\migrations\graph.py", line 370, in ensure_not_cyclic
+    raise CircularDependencyError(", ".join("%s.%s" % n for n in cycle))
+django.db.migrations.exceptions.CircularDependencyError: api.0001_initial, event.0001_initial
