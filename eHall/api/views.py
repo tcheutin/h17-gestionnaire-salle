@@ -55,7 +55,7 @@ class TicketList(APIView):
                     if not events[0].isClose:
 
                         tickets = Ticket.objects.raw(
-                            'SELECT * FROM event_ticket WHERE "event_id"=%s',
+                            'SELECT * FROM eHall_ticket WHERE "event_id"=%s',
                             [terminal[0].event_id])
                         if len(list(tickets)) != 0:
                             serializer = TicketSerializer(tickets, many=True)
