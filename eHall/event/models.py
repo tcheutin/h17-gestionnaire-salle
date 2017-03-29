@@ -49,6 +49,7 @@ class Event(models.Model):
         
 class TicketRetailer(models.Model):
     name = models.CharField(max_length=100, default='', null=False)
+    url = models.URLField(max_length=200, default='', null=False)
     
     def __str__(self):
         return self.name

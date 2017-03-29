@@ -3,14 +3,16 @@
     "model": "event.TicketRetailer",
     "pk": 1,
     "fields": {
-      "name": "Vente 1"
+      "name": "4Tickets",
+      "url": "https://quatickets.herokuapp.com/"
     }
   },
   {
     "model": "event.TicketRetailer",
     "pk": 2,
     "fields": {
-      "name": "Vente 2"
+      "name": "Show It",
+      "url": "https://gti525-vente2.herokuapp.com/"
     }
   }
 ]
