@@ -1,3 +1,5 @@
+import urllib.parse
+import requests
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from api.models import Terminal
@@ -41,7 +43,7 @@ def add(request):
                 ticketList.append(ticket)
 
             Ticket.objects.bulk_create(ticketList)
-        else
+        else:
             return HttpResponse(status=400)
 
         events = getEventPage(request, 1)
@@ -59,7 +61,7 @@ def edit(request, eventId):
         form = EditForm(request.POST or None, instance=event)
         if form.is_valid():
             form.save()
-        else
+        else:
             return HttpResponse(status=400)
 
         events = getEventPage(request, 1)
@@ -76,11 +78,25 @@ def publish(request, eventId):
         event = Event.objects.get(pk=eventId)
         form = PublishForm(request.POST or None, instance=event)
         if form.is_valid():
-            # Incomplete
             event = form.save(commit=False)
             event.status = 'o'
-            event.save()
-        else
+            
+            retailer = event.retailer
+            headers = {
+                    'Content-Type': 'application/json',
+                    'Authorization': retailer.key,
+                }
+            
+            if retailer.pk == 1:
+                return HttpResponse(status=501) # Not yet implemented
+            elif retailer.pk == 2:
+                # First insert the theater if it does not exist
+                path = 'api/theater/' + event.auditorium_id
+                url = parse.urljoin(retailer.url, path)
+                response = requests.post(url, headers)
+            
+            event.save() # only if the publishing succeeds
+        else:
             return HttpResponse(status=400)
 
         events = getEventPage(request, 1)

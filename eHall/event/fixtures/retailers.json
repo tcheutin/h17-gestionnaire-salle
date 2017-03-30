@@ -4,7 +4,8 @@
     "pk": 1,
     "fields": {
       "name": "4Tickets",
-      "url": "https://quatickets.herokuapp.com/"
+      "url": "https://quatickets.herokuapp.com/",
+      "key": "AbCdEf123456"
     }
   },
   {
@@ -12,7 +13,8 @@
     "pk": 2,
     "fields": {
       "name": "Show It",
-      "url": "https://gti525-vente2.herokuapp.com/"
+      "url": "https://gti525-vente2.herokuapp.com/",
+      "key": "C3D05B9396A7F4256D6C746F68ECCDE8CD1E86162C87ED9D2D58726FDFC443BDA178031061D620D3AA13F808910311A40D184C50F89A39B1395DD5364986BF29"
     }
   }
 ]

@@ -33,7 +33,7 @@ def add(request):
             auditorium = form.save()
             auditorium.creator = request.user
             auditorium.save()
-        else
+        else:
             return HttpResponse(status=400)
             
         auditoriums = getAuditoriumPage(request, 1)
@@ -51,7 +51,7 @@ def edit(request, auditoriumId):
         form = EditForm(request.POST or None, instance=auditorium)
         if form.is_valid():
             form.save()
-        else
+        else:
             return HttpResponse(status=400)
             
         auditoriums = getAuditoriumPage(request, 1)
