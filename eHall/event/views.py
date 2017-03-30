@@ -41,6 +41,8 @@ def add(request):
                 ticketList.append(ticket)
 
             Ticket.objects.bulk_create(ticketList)
+        else
+            return HttpResponse(status=400)
 
         events = getEventPage(request, 1)
 
@@ -57,6 +59,8 @@ def edit(request, eventId):
         form = EditForm(request.POST or None, instance=event)
         if form.is_valid():
             form.save()
+        else
+            return HttpResponse(status=400)
 
         events = getEventPage(request, 1)
 
@@ -76,6 +80,8 @@ def publish(request, eventId):
             event = form.save(commit=False)
             event.status = 'o'
             event.save()
+        else
+            return HttpResponse(status=400)
 
         events = getEventPage(request, 1)
 
