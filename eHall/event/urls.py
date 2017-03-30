@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^add/$', views.add, name='add'),
     url(r'^(?P<eventId>[0-9]+)/edit/$', views.edit, name='edit'),
     url(r'^(?P<eventId>[0-9]+)/publish/$', views.publish, name='publish'),
+    url(r'^(?P<eventId>[0-9]+)/open/$', views.open, name='open'),
 	url(r'^(?P<eventId>[0-9]+)/close/$', views.close, name='close'),
     url(r'^(?P<eventId>[0-9]+)/delete/$', views.delete, name='delete'),
     url(r'^(?P<eventId>[0-9]+)/statistics/$', views.statistics, name='statistics'),

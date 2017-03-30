@@ -1,7 +1,8 @@
-import urllib.parse
 import requests
+from urllib.parse import urljoin
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse
 from api.models import Terminal
 from eHall.models import Ticket
 from .models import Event
@@ -79,7 +80,6 @@ def publish(request, eventId):
         form = PublishForm(request.POST or None, instance=event)
         if form.is_valid():
             event = form.save(commit=False)
-            event.status = 'o'
             
             retailer = event.retailer
             headers = {
@@ -91,13 +91,33 @@ def publish(request, eventId):
                 return HttpResponse(status=501) # Not yet implemented
             elif retailer.pk == 2:
                 # First insert the theater if it does not exist
-                path = 'api/theater/' + event.auditorium_id
-                url = parse.urljoin(retailer.url, path)
-                response = requests.post(url, headers)
+                path = 'api/theater/' + str(event.auditorium_id)
+                url = urljoin(retailer.url, path)
+                #response = requests.post(url, headers)
             
+            event.isPublished = True
             event.save() # only if the publishing succeeds
         else:
             return HttpResponse(status=400)
+
+        events = getEventPage(request, 1)
+
+        context = {
+            'events': events,
+        }
+        return render(request, 'eventTable.html', {**eventContext, **context})
+        
+def open(request, eventId):
+    if request.method == 'GET':
+        return getOpenForm(request, eventId)
+    elif request.method == 'POST':
+        event = Event.objects.get(pk=eventId)
+        
+        # API calls to retailer...
+        
+        event.isOnSale = True
+        event.status = 'o'
+        event.save()
 
         events = getEventPage(request, 1)
 
@@ -110,9 +130,11 @@ def close(request, eventId):
     if request.method == 'GET':
         return getCloseForm(request, eventId)
     elif request.method == 'POST':
-        # Incomplete
         event = Event.objects.get(pk=eventId)
         event.status = 'c'
+        
+        # API calls to retailer...
+        
         event.save()
 
         events = getEventPage(request, 1)
@@ -198,6 +220,14 @@ def getPublishForm(request, eventId):
         'form': form,
     }
     return render(request, 'publishForm.html', {**eventContext, **context})
+    
+def getOpenForm(request, eventId):
+    event = get_object_or_404(Event, pk=eventId)
+
+    context = {
+        'event': event,
+    }
+    return render(request, 'openForm.html', {**eventContext, **context})
 
 def getCloseForm(request, eventId):
     event = get_object_or_404(Event, pk=eventId)

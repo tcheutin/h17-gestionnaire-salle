@@ -2,6 +2,7 @@
 
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse
 from datetime import datetime
 from .models import Auditorium
 from event.models import Event
