@@ -1,4 +1,4 @@
-import requests, json#, pprint
+import requests, json, pprint
 from urllib.parse import urljoin
 from datetime import datetime
 from django.shortcuts import get_object_or_404, render, redirect
@@ -8,7 +8,6 @@ from api.models import Terminal
 from eHall.models import Ticket
 from .models import Event
 from .forms import *
-from .serializers import EventSerializer
 
 # Set the active attribute to activate the appropriate navbar button
 eventContext = {
@@ -124,7 +123,7 @@ def publish(request, eventId):
                     return HttpResponse(status=500)
                     
                 # Add the event
-                path = 'api/show'
+                path = 'api/show/'
                 url = urljoin(retailer.url, path)
                 response = requests.get(urljoin(url, str(event.pk)), headers=headers, timeout=10)
                 
@@ -148,8 +147,24 @@ def publish(request, eventId):
                     response = requests.post(url, headers=headers, data=json.dumps(eventData), timeout=10)
                 else:
                     eventData.pop('showId') # Do not send the event ID when modifying
-                    response = requests.put(urljoin(url, str(event.auditorium_id)), headers=headers, data=json.dumps(eventData), timeout=10)
+                    response = requests.put(urljoin(url, str(event.pk)), headers=headers, data=json.dumps(eventData), timeout=10)
                     
+                # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
+                #pprint.pprint(response.text)
+                response.raise_for_status()
+                if str(response.status_code)[0] != '2':
+                    return HttpResponse(status=500)
+                    
+                # Push ticket IDs to the remote event
+                path = urljoin(urljoin('api/show/', str(event.pk) + '/'), 'tickets')
+                url = urljoin(retailer.url, path)
+                tickets = Ticket.objects.filter(event=event)
+                ticketArray=[{'ticketId':str(tickets[i].pk)} for i in range(tickets.count())]
+                ticketData = {
+                    'tickets': ticketArray,
+                }
+                response = requests.post(url, headers=headers, data=json.dumps(ticketData), timeout=10)
+                
                 # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
                 #pprint.pprint(response.text)
                 response.raise_for_status()
@@ -175,7 +190,30 @@ def open(request, eventId):
     elif request.method == 'POST':
         event = Event.objects.get(pk=eventId)
         
-        # API calls to retailer...
+        retailer = event.retailer
+        headers = {
+                'Content-Type': 'application/json',
+                'Authorization': retailer.key,
+            }
+        
+        if retailer.pk == 1:
+            return HttpResponse(status=501) # Not yet implemented
+        elif retailer.pk == 2:
+            path = 'api/show/'
+            url = urljoin(retailer.url, path)
+            
+            patchData = {
+                    'isPublished': True,
+                    'isOnSale': True,
+                }
+            
+            response = requests.patch(urljoin(url, str(event.pk)), headers=headers, data=json.dumps(patchData), timeout=10)
+            
+            # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
+            #pprint.pprint(response.text)
+            response.raise_for_status()
+            if str(response.status_code)[0] != '2':
+                return HttpResponse(status=500)
         
         event.isOnSale = True
         event.status = 'o'
@@ -195,7 +233,29 @@ def close(request, eventId):
         event = Event.objects.get(pk=eventId)
         event.status = 'c'
         
-        # API calls to retailer...
+        retailer = event.retailer
+        headers = {
+                'Content-Type': 'application/json',
+                'Authorization': retailer.key,
+            }
+        
+        if retailer.pk == 1:
+            return HttpResponse(status=501) # Not yet implemented
+        elif retailer.pk == 2:
+            path = 'api/show/'
+            url = urljoin(retailer.url, path)
+            
+            patchData = {
+                    'isOnSale': False,
+                }
+            
+            response = requests.patch(urljoin(url, str(event.pk)), headers=headers, data=json.dumps(patchData), timeout=10)
+            
+            # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
+            #pprint.pprint(response.text)
+            response.raise_for_status()
+            if str(response.status_code)[0] != '2':
+                return HttpResponse(status=500)
         
         event.save()
 
