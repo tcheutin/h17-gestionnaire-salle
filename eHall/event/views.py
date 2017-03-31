@@ -1,5 +1,6 @@
-import requests
+import requests, json#, pprint
 from urllib.parse import urljoin
+from datetime import datetime
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
@@ -7,6 +8,7 @@ from api.models import Terminal
 from eHall.models import Ticket
 from .models import Event
 from .forms import *
+from .serializers import EventSerializer
 
 # Set the active attribute to activate the appropriate navbar button
 eventContext = {
@@ -82,6 +84,7 @@ def publish(request, eventId):
             event = form.save(commit=False)
             
             retailer = event.retailer
+            auditorium = event.auditorium
             headers = {
                     'Content-Type': 'application/json',
                     'Authorization': retailer.key,
@@ -90,13 +93,72 @@ def publish(request, eventId):
             if retailer.pk == 1:
                 return HttpResponse(status=501) # Not yet implemented
             elif retailer.pk == 2:
-                # First insert the theater if it does not exist
-                path = 'api/theater/' + str(event.auditorium_id)
+                # Add or edit the auditorium
+                path = 'api/theater/'
                 url = urljoin(retailer.url, path)
-                #response = requests.post(url, headers)
-            
+                response = requests.get(urljoin(url, str(event.auditorium_id)), headers=headers, timeout=10)
+                
+                auditoriumData = {
+                        'theaterId': auditorium.pk,
+                        'adminId': event.creator_id,
+                        'name': auditorium.name,
+                        'address': auditorium.address,
+                        'city': auditorium.city,
+                        'province': auditorium.province,
+                        'postalCode': auditorium.postalCode,
+                        'capacity': auditorium.capacity,
+                        'image': auditorium.image,
+                    }
+                
+                if response.status_code == 404:
+                    # Create the auditorium on the remote site
+                    response = requests.post(url, headers=headers, data=json.dumps(auditoriumData), timeout=10)
+                else:
+                    auditoriumData.pop('theaterId') # Do not send the auditorium ID when modifying
+                    response = requests.put(urljoin(url, str(event.auditorium_id)), headers=headers, data=json.dumps(auditoriumData), timeout=10)
+                
+                # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
+                #pprint.pprint(response.text)
+                response.raise_for_status()
+                if str(response.status_code)[0] != '2':
+                    return HttpResponse(status=500)
+                    
+                # Add the event
+                path = 'api/show'
+                url = urljoin(retailer.url, path)
+                response = requests.get(urljoin(url, str(event.pk)), headers=headers, timeout=10)
+                
+                eventData = {
+                    'showId': event.pk,
+                    'theaterId': auditorium.pk,
+                    'sticker': event.image,
+                    'image': event.image,
+                    'title': event.name,
+                    'artist': event.artist,
+                    'datetime': event.startDate.isoformat(),
+                    'description': event.description,
+                    'price': float(event.ticketPrice),
+                    'isFeatured': False,
+                    'isPublished': False,
+                    'isOnSale': False,
+                }
+                
+                if response.status_code == 404:
+                    # Create the event on the remote site
+                    response = requests.post(url, headers=headers, data=json.dumps(eventData), timeout=10)
+                else:
+                    eventData.pop('showId') # Do not send the event ID when modifying
+                    response = requests.put(urljoin(url, str(event.auditorium_id)), headers=headers, data=json.dumps(eventData), timeout=10)
+                    
+                # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
+                #pprint.pprint(response.text)
+                response.raise_for_status()
+                if str(response.status_code)[0] != '2':
+                    return HttpResponse(status=500)
+                    
+            # Operations were successful. Change the local model to reflect changes.
             event.isPublished = True
-            event.save() # only if the publishing succeeds
+            event.save()
         else:
             return HttpResponse(status=400)
 
