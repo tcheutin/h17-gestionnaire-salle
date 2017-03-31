@@ -1,4 +1,4 @@
-import requests, json, pprint
+import requests, json, uuid#, pprint
 from urllib.parse import urljoin
 from datetime import datetime
 from django.shortcuts import get_object_or_404, render, redirect
@@ -256,6 +256,27 @@ def close(request, eventId):
             response.raise_for_status()
             if str(response.status_code)[0] != '2':
                 return HttpResponse(status=500)
+                
+            # Retrieve ticket information
+            path = urljoin(urljoin('api/show/', str(event.pk) + '/'), 'tickets')#?isSold=true')
+            url = urljoin(retailer.url, path)
+            response = requests.get(url, headers=headers, timeout=10)
+            
+            # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
+            #pprint.pprint(response.text)
+            response.raise_for_status()
+            if str(response.status_code)[0] != '2':
+                return HttpResponse(status=500)
+                
+            # Overwrite local ticket data
+            tickets = response.json()['tickets']
+            for i in range(len(tickets)):
+                ticket = Ticket.objects.get(pk=uuid.UUID(tickets[i]['ticketId']))
+                ticket.isReserved = tickets[i]['isReserved']
+                ticket.isSold = tickets[i]['isSold']
+                if ticket.isSold:
+                    ticket.owner = '{} {}'.format(ticket[i]['client']['firstName'], ticket[i]['client']['lastName'])
+                ticket.save()
         
         event.save()
 
