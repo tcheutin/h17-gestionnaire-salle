@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <title>eHall</title>
 
     {% load staticfiles %}
@@ -16,16 +16,7 @@
 </head>
 <body>
     {% include 'nav.html' %}
-    {% for message in messages %}
-    <div class="alert-fixed-top">
-        <div class="alert alert-{{ message.tags }} alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            {{ message }}
-        </div>
-    </div>
-    {% endfor %}
+    {% include 'message.html' %}
 
     {% block content %}
     {% endblock %}
@@ -35,16 +26,16 @@
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->    
+    <![endif]-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>                       
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
     <script src="{% static 'js/site.js' %}"></script>
     {% block script %}
     {% endblock %}
-    
+
     {% include 'footer.html' %}
-    
+
     </body>
 </html>
