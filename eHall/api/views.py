@@ -48,15 +48,17 @@ class TicketList(APIView):
                 print("Terminal " + str(terminal[0].address) + " request tickets.")
 
                 events = Event.objects.raw(
-                'SELECT * FROM event_event WHERE "id"=%s',
-                [terminal[0].event_id])
+                    'SELECT * FROM event_event WHERE "id"=%s',
+                    [terminal[0].event_id])
 
                 if len(list(events)) == 1:
                     if not events[0].isClose:
 
-                        tickets = Ticket.objects.raw(
-                            'SELECT * FROM eHall_ticket WHERE "event_id"=%s',
-                            [terminal[0].event_id])
+                        # tickets = Ticket.objects.raw(
+                        #     'SELECT * FROM eHall_ticket WHERE "event_id"=%s',
+                        #     [terminal[0].event_id])
+
+                        tickets = Ticket.objects.filter(event_id=terminal[0].event_id)
                         if len(list(tickets)) != 0:
                             serializer = TicketSerializer(tickets, many=True)
 
@@ -115,14 +117,16 @@ class Close(APIView):
                 'SELECT * FROM api_terminal WHERE "address"=%s', [address])
 
             if str(len(list(terminal))) == "1":
-                print("terminal " + str(terminal[0].address))
+                print("Terminal " + str(terminal[0].address))
 
-                events = Event.objects.raw(
-                    'SELECT * FROM event_event WHERE "id"=%s',
-                    [terminal[0].event_id])
+                # events = Event.objects.raw(
+                #     'SELECT * FROM event_event WHERE "id"=%s',
+                #     [terminal[0].event_id])
 
-                print("event " + str(events[0].isClose))
-                print("Events " + str(len(list(events))))
+                events = Event.objects.filter(id=terminal[0].event_id)
+
+                # print("event " + str(events[0].isClose))
+                # print("Events " + str(len(list(events))))
 
                 if str(len(list(events))) == "1":
                     serializer = ClosingSerializer(events, many=True)
