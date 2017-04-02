@@ -3,6 +3,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import datetime
 from .models import Auditorium
 from event.models import Event
+from django.contrib import messages
 from .forms import *
 
 # Set the active attribute to activate the appropriate navbar button
@@ -31,13 +32,17 @@ def add(request):
             auditorium = form.save()
             auditorium.creator = request.user
             auditorium.save()
+            messages.success(request, "Auditorium sucessfully added!")
+        else:
+            messages.error(request, "An error occured. Auditorium could not be added!")
+
 
         auditoriums = getAuditoriumPage(request, 1)
 
         context = {
             'auditoriums': auditoriums,
         }
-        return render(request, 'auditoriumTable.html', {**auditoriumContext, **context})
+        return render(request, 'auditorium.html', {**auditoriumContext, **context})
 
 def edit(request, auditoriumId):
     if request.method == 'GET':
@@ -47,13 +52,16 @@ def edit(request, auditoriumId):
         form = EditForm(request.POST or None, instance=auditorium)
         if form.is_valid():
             form.save()
+            messages.success(request, "Auditorium edited!")
+        else:
+            messages.error(request, "An error occured. Auditorium could not be added!")
 
         auditoriums = getAuditoriumPage(request, 1)
 
         context = {
             'auditoriums': auditoriums,
         }
-        return render(request, 'auditoriumTable.html', {**auditoriumContext, **context})
+        return render(request, 'auditorium.html', {**auditoriumContext, **context})
 
 def delete(request, auditoriumId):
     if request.method == 'GET':
@@ -61,13 +69,14 @@ def delete(request, auditoriumId):
     elif request.method == 'POST':
         auditorium = Auditorium.objects.get(pk=auditoriumId)
         auditorium.delete()
+        messages.success(request, "Auditorium sucessfully deleted!")
 
         auditoriums = getAuditoriumPage(request, 1)
 
         context = {
             'auditoriums': auditoriums,
         }
-        return render(request, 'auditoriumTable.html', {**auditoriumContext, **context})
+        return render(request, 'auditorium.html', {**auditoriumContext, **context})
 
 def events(request, auditoriumId):
     auditorium = get_object_or_404(Auditorium, pk=auditoriumId)

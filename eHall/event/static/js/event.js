@@ -29,8 +29,8 @@ $(function() {
             }
         });
     });
-	
-	$('#publish').on('show.bs.modal', function() {        
+
+	$('#publish').on('show.bs.modal', function() {
         $.ajax({
             'url': '/event/'.concat(eventId, '/publish/'),
             'method': 'GET',
@@ -39,8 +39,8 @@ $(function() {
             }
         });
     });
-    
-    $('#delete').on('show.bs.modal', function() {        
+
+    $('#delete').on('show.bs.modal', function() {
         $.ajax({
             'url': '/event/'.concat(eventId, '/delete/'),
             'method': 'GET',
@@ -75,11 +75,7 @@ $(function() {
             'contentType': false,
             'processData': false,
             'success': function(response){
-                $('#event-table').html(response);
-                alert("Event added.");
-            },
-            error: function(){
-                alert('Error occured. Could not add the event.');
+                $('body').html(response);
             }
         });
     });
@@ -99,19 +95,15 @@ $(function() {
             'contentType': false,
             'processData': false,
             'success': function(response){
-                $('#event-table').html(response);
-                alert("Event edited.");
-            },
-            error: function(){
-                alert('Error occured. Could not edit the event.');
+                $('body').html(response);
             }
         });
     });
-	
+
 	$('#publish-button').on('click', function() {
         var form = $('#publish-form')[0];
         var formData = new FormData(form);
-        
+
         $.ajax({
             'url': '/event/'.concat(eventId, '/publish/'),
             'data': formData,
@@ -123,7 +115,7 @@ $(function() {
             }
         });
     });
-    
+
     $('#delete-button').on('click', function() {
         var form = $('#delete-form')[0];
         var formData = new FormData(form);
@@ -135,11 +127,7 @@ $(function() {
             'contentType': false,
             'processData': false,
             'success': function(response){
-                $('#event-table').html(response);
-                alert("Event deleted.");
-            },
-            error: function(){
-                alert('Error occured. Could not delete the event.');
+                $('body').html(response);
             }
         });
     });
