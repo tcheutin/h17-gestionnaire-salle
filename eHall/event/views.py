@@ -97,7 +97,7 @@ def publish(request, eventId):
                 auditoriumData = {
                         'id': auditorium.pk,
                         'name': auditorium.name,
-                        'address': auditorium.address + ', ' + auditorium.city + ', ' + auditorium.province + ', ' + auditorium.postalCode,
+                        'address': auditorium.address + ', ' + auditorium.city + ', ' + auditorium.province,
                         'capacity': auditorium.capacity,
                 }
 
@@ -127,9 +127,9 @@ def publish(request, eventId):
                     'time': event.startDate.isoformat(),
                     'description': event.description,
                     'image': event.image,
-                    'visible': event.isPublished,
-                    'active': event.isOnSale,
-                    'hot': True,
+                    'visible': False,
+                    'active': False,
+                    'hot': False,
                     'price': float(event.ticketPrice),
                 }
 
@@ -351,13 +351,13 @@ def close(request, eventId):
                 return HttpResponse(status=500)
 
             # Overwrite local ticket data
-            tickets = response.json()['tickets']
+            tickets = response.json()['data']
             for i in range(len(tickets)):
-                ticket = Ticket.objects.get(pk=uuid.UUID(tickets[i]['ticketId']))
-                ticket.isReserved = tickets[i]['isReserved']
-                ticket.isSold = tickets[i]['isSold']
+                ticket = Ticket.objects.get(pk=uuid.UUID(tickets[i]['guid']))
+                ticket.isReserved = False
+                ticket.isSold = tickets[i]['state'] == 'sold'
                 if ticket.isSold:
-                    ticket.owner = '{} {}'.format(ticket[i]['client']['firstName'], ticket[i]['client']['lastName'])
+                    ticket.owner = 'N/A'#tickets[i]['client']
                 ticket.save()
 
             # return HttpResponse(status=501) # Not yet implemented
@@ -395,7 +395,7 @@ def close(request, eventId):
                 ticket.isReserved = tickets[i]['isReserved']
                 ticket.isSold = tickets[i]['isSold']
                 if ticket.isSold:
-                    ticket.owner = '{} {}'.format(ticket[i]['client']['firstName'], ticket[i]['client']['lastName'])
+                    ticket.owner = '{} {}'.format(tickets[i]['client']['firstName'], tickets[i]['client']['lastName'])
                 ticket.save()
 
         event.save()
