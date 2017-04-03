@@ -4,15 +4,14 @@
 {% load bootstrap_pagination %}
 
 {% block content %}
-
 <script src="{% static 'js/terminal.js' %}"></script>
 <div class="container">
 	<div class="row">
         <div class="col-md-12">
-					<h3>Terminals</h3>
+					<h3>Terminal #{{ terminal.id }} ({{ terminal.address }}) - Logs</h3>
 
-					<div id="terminal-table">
-						{% include "terminalTable.html" %}
+					<div id="logs-table">
+						{% include "logTable.html" %}
 					</div>
 
         </div>

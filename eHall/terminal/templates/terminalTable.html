@@ -4,19 +4,31 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>IP</th>
+            <th>IP Address</th>
             <th>Status</th>
-            <th>Événement</th>
+            <th>Event</th>
+            <th>Event Status</th>
         </tr>
     </thead>
 
     <tbody>
         {% for terminal in terminals %}
             <tr>
-                <td>{{ terminal.id }}</td>
-                <td>{{ terminal.address }}</td>
-                <td>{{ terminal.status }}</td>
-                <td>{{ terminal.event }}</td>
+              <td>{{ terminal.id }}</td>
+              <td><a href="/terminal/logs/{{ terminal.id }}">{{ terminal.address }}</a></td>
+              <!-- <td>{{ terminal.address }}</td> -->
+              <td>{{ terminal.status }}</td>
+              <td>
+                <select id="{{ terminal.id}}" onchange="setEvent(this.id, this)" name="Event">
+                  <option value="Empty"> ----- </option>
+                  {% for event in events %}
+                    <option value="{{ event.id }}" {% if terminal.event_id == event.id %} selected="selected"{% endif %}>{{ event.name }}</option>
+                  {% endfor %}
+                </select>
+              </td>
+              <!-- PLAY AND STOP -->
+              <!-- <td><a href="#" title="Play video" class="play"></a></td> -->
+              <td><button id="{{ terminal.id }}" onclick="notifyTerminal(this)">Go!</button></td>
             </tr>
         {% endfor %}
     </tbody>

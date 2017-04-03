@@ -1,0 +1,8 @@
+{% load crispy_forms_tags %}
+
+<form method="post" id="close-form">
+    {% csrf_token %}
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to close ticket sales for <em>{{ event.name }}</em>?
+    </div>
+</form>

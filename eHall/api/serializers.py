@@ -1,6 +1,8 @@
 from api.models import Terminal
-from event.models import Ticket, Event
+from eHall.models import Ticket
+from event.models import Event
 from auditorium.models import Auditorium
+from report.models import Report
 from rest_framework import serializers
 
 
@@ -28,3 +30,13 @@ class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = ('id', 'owner', 'event')
+
+class ReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Report
+        fields = ('terminal','httpResponse', 'ticketHash' ,'time')
+
+class ClosingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ('id', 'isClose')

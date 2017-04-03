@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'accounts',
     'api',
     'terminal',
+    'report',
     'crispy_forms',
     'bootstrap_pagination',
     'rest_framework',

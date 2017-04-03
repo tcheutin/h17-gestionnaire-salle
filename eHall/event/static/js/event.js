@@ -39,8 +39,28 @@ $(function() {
             }
         });
     });
-
-    $('#delete').on('show.bs.modal', function() {
+    
+    $('#open').on('show.bs.modal', function() {        
+        $.ajax({
+            'url': '/event/'.concat(eventId, '/open/'),
+            'method': 'GET',
+            'success': function(response){
+                $('#open-body').html(response);
+            }
+        });
+    });
+	
+	$('#close').on('show.bs.modal', function() {        
+        $.ajax({
+            'url': '/event/'.concat(eventId, '/close/'),
+            'method': 'GET',
+            'success': function(response){
+                $('#close-body').html(response);
+            }
+        });
+    });
+    
+    $('#delete').on('show.bs.modal', function() { 
         $.ajax({
             'url': '/event/'.concat(eventId, '/delete/'),
             'method': 'GET',
@@ -63,10 +83,6 @@ $(function() {
     $('#add-button').on('click', function() {
         var form = $('#add-form')[0];
         var formData = new FormData(form);
-        //var image = $('#image').files[0];
-        //if(typeof image !== 'undefined') {
-        //    formData.append('image', image);
-        //} // TODO support image upload
 
         $.ajax({
             'url': '/event/add/',
@@ -83,10 +99,6 @@ $(function() {
     $('#edit-button').on('click', function() {
         var form = $('#edit-form')[0];
         var formData = new FormData(form);
-        //var image = $('#image').files[0];
-        //if(typeof image !== 'undefined') {
-        //    formData.append('image', image);
-        //} // TODO support image upload
 
         $.ajax({
             'url': '/event/'.concat(eventId, '/edit/'),
@@ -115,7 +127,47 @@ $(function() {
             }
         });
     });
+  
+    $('#open-button').on('click', function() {
+        var form = $('#open-form')[0];
+        var formData = new FormData(form);
 
+        $.ajax({
+            'url': '/event/'.concat(eventId, '/open/'),
+            'data': formData,
+            'method': 'POST',
+            'contentType': false,
+            'processData': false,
+            'success': function(response){
+                $('#event-table').html(response);
+                alert("Event opened for sale.");
+            },
+            error: function(){
+                alert('Error occured. Could not open the event for sale.');
+            }
+        });
+    });
+	
+	$('#close-button').on('click', function() {
+        var form = $('#close-form')[0];
+        var formData = new FormData(form);
+
+        $.ajax({
+            'url': '/event/'.concat(eventId, '/close/'),
+            'data': formData,
+            'method': 'POST',
+            'contentType': false,
+            'processData': false,
+            'success': function(response){
+                $('#event-table').html(response);
+                alert("Event closed for sale.");
+            },
+            error: function(){
+                alert('Error occured. Could not close the event for sale.');
+            }
+        });
+    });
+    
     $('#delete-button').on('click', function() {
         var form = $('#delete-form')[0];
         var formData = new FormData(form);

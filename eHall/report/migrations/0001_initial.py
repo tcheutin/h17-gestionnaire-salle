@@ -11,17 +11,18 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('event', '0001_initial'),
+        ('api', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Terminal',
+            name='Report',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('status', models.CharField(choices=[('Connected', 'Connected'), ('Ready', 'Ready')], default='Connected', max_length=30)),
-                ('address', models.CharField(max_length=30, unique=True)),
-                ('event', models.ForeignKey(default='', null=True, on_delete=django.db.models.deletion.SET_NULL, to='event.Event')),
+                ('httpResponse', models.CharField(default='', max_length=120)),
+                ('time', models.DateTimeField(blank=True)),
+                ('ticketHash', models.CharField(default=None, max_length=120)),
+                ('terminal', models.ForeignKey(default='', null=True, on_delete=django.db.models.deletion.SET_NULL, to='api.Terminal')),
             ],
             options={
                 'ordering': ['id'],
