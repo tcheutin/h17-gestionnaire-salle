@@ -150,9 +150,9 @@ def publish(request, eventId):
                 path = urljoin(urljoin('api/shows/', str(event.pk) + '/'), 'tickets')
                 url = urljoin(retailer.url, path)
                 tickets = Ticket.objects.filter(event=event)
-                ticketArray=[{'guids':str(tickets[i].pk)} for i in range(tickets.count())]
+                ticketArray=[str(tickets[i].pk) for i in range(tickets.count())]
                 ticketData = {
-                    'tickets': ticketArray,
+                    'guids': ticketArray,
                 }
                 response = requests.post(url, headers=headers, data=json.dumps(ticketData), timeout=10)
 
@@ -270,12 +270,20 @@ def open(request, eventId):
             path = 'api/shows/'
             url = urljoin(retailer.url, path)
 
-            patchData = {
+            eventData = {
+                    'venueid': event.auditorium_id,
+                    'title': event.name,
+                    'artist': event.artist,
+                    'time': event.startDate.isoformat(),
+                    'description': event.description,
+                    'image': event.image,
                     'visible': True,
                     'active': True,
+                    'hot': False,
+                    'price': float(event.ticketPrice),
             }
 
-            response = requests.patch(urljoin(url, str(event.pk)), headers=headers, data=json.dumps(patchData), timeout=10)
+            response = requests.put(urljoin(url, str(event.pk)), headers=headers, data=json.dumps(eventData), timeout=10)
 
             # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
             #pprint.pprint(response.text)
@@ -327,11 +335,20 @@ def close(request, eventId):
             path = 'api/shows/'
             url = urljoin(retailer.url, path)
 
-            patchData = {
+            eventData = {
+                    'venueid': event.auditorium_id,
+                    'title': event.name,
+                    'artist': event.artist,
+                    'time': event.startDate.isoformat(),
+                    'description': event.description,
+                    'image': event.image,
+                    'visible': True,
                     'active': False,
+                    'hot': False,
+                    'price': float(event.ticketPrice),
             }
 
-            response = requests.patch(urljoin(url, str(event.pk)), headers=headers, data=json.dumps(patchData), timeout=10)
+            response = requests.put(urljoin(url, str(event.pk)), headers=headers, data=json.dumps(eventData), timeout=10)
 
             # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
             #pprint.pprint(response.text)
@@ -353,12 +370,15 @@ def close(request, eventId):
             # Overwrite local ticket data
             tickets = response.json()['data']
             for i in range(len(tickets)):
-                ticket = Ticket.objects.get(pk=uuid.UUID(tickets[i]['guid']))
-                ticket.isReserved = False
-                ticket.isSold = tickets[i]['state'] == 'sold'
-                if ticket.isSold:
-                    ticket.owner = tickets[i]['owner']
-                ticket.save()
+                try:
+                    ticket = Ticket.objects.get(pk=uuid.UUID(tickets[i]['guid']))
+                    ticket.isReserved = False
+                    ticket.isSold = tickets[i]['state'] == 'sold'
+                    if ticket.isSold:
+                        ticket.owner = tickets[i]['owner']
+                    ticket.save()
+                except:
+                    continue
 
             # return HttpResponse(status=501) # Not yet implemented
         elif retailer.pk == 2:
