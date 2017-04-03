@@ -15,7 +15,7 @@
             <tr>
               <td>{{ log.id }}</td>
               <td>{{ log.time }}</td>
-              <td>{{ log.httpResponse }}</td>
+              <td>{% if log.httpResponse == '202' %} {{log.httpResponse}}="Billet Validé" {% elif log.httpResponse == '409' %} {{log.httpResponse}}="Billet déjà Validé" {% endif %}</td>
               <td>{{ log.ticketHash }}</td>
             </tr>
         {% endfor %}

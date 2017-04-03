@@ -20,9 +20,13 @@ class TerminalList(APIView):
     """
 
     def get(self, request, format=None):
-        terminals = Terminal.objects.all()
-        serializer = TerminalSerializer(terminals, many=True)
-        return Response(serializer.data)
+        address = request.META.get('HTTP_IPADDRESS')
+        if address is not None:
+            t = Terminal.objects.get(address=address)
+            terminals = Terminal.objects.filter(event=t.event)
+            serializer = TerminalSerializer(terminals, many=True)
+            return Response(serializer.data)
+        return Response("No terminal found", status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request, format=None):
         serializer = TerminalSerializer(data=request.data)
@@ -54,11 +58,7 @@ class TicketList(APIView):
                 if len(list(events)) == 1:
                     if not events[0].isClose:
 
-                        # tickets = Ticket.objects.raw(
-                        #     'SELECT * FROM eHall_ticket WHERE "event_id"=%s',
-                        #     [terminal[0].event_id])
-
-                        tickets = Ticket.objects.filter(event_id=terminal[0].event_id)
+                        tickets = Ticket.objects.filter(event_id=terminal[0].event_id, isSold=True)
                         if len(list(tickets)) != 0:
                             serializer = TicketSerializer(tickets, many=True)
 

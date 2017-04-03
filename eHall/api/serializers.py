@@ -20,7 +20,7 @@ class EventSerializer(serializers.ModelSerializer):
     auditorium = AuditoriumSerializer(read_only=True)
     class Meta:
         model = Event
-        fields = ('name', 'auditorium')
+        fields = ('name', 'startDate', 'auditorium')
 
 ## MISSING TIME
 # TODO : Add closing time
