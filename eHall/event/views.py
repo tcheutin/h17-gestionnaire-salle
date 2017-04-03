@@ -163,7 +163,7 @@ def publish(request, eventId):
                     return HttpResponse(status=500)
             elif retailer.pk == 2:
                 # Add or edit the auditorium
-                path = 'api/theater/'
+                path = 'api/theater'
                 url = urljoin(retailer.url, path)
                 response = requests.get(urljoin(url, str(event.auditorium_id)), headers=headers, timeout=10)
 
@@ -179,6 +179,17 @@ def publish(request, eventId):
                         'image': auditorium.image,
                     }
 
+
+                print("theaterId:" + str(auditorium.pk))
+                print("adminId:" + str(event.creator_id))
+                print("name:" + str(auditorium.name))
+                print("address:" + str(auditorium.address))
+                print("city:" + str(auditorium.city))
+                print("province:" + str(auditorium.province))
+                print("postalCode:" + str(auditorium.postalCode))
+                print("capacity:" + str(auditorium.capacity))
+                print("image:" + str(auditorium.image))
+
                 if response.status_code == 404:
                     # Create the auditorium on the remote site
                     response = requests.post(url, headers=headers, data=json.dumps(auditoriumData), timeout=10)
@@ -193,7 +204,7 @@ def publish(request, eventId):
                     return HttpResponse(status=500)
 
                 # Add the event
-                path = 'api/show/'
+                path = 'api/show'
                 url = urljoin(retailer.url, path)
                 response = requests.get(urljoin(url, str(event.pk)), headers=headers, timeout=10)
 
