@@ -1,4 +1,4 @@
-import requests, json, uuid#, pprint
+import requests, json, uuid, pprint
 from urllib.parse import urljoin
 from datetime import datetime
 from django.shortcuts import get_object_or_404, render, redirect
@@ -97,24 +97,24 @@ def publish(request, eventId):
             if retailer.pk == 1:
                 path = 'api/venues/'
                 url = urljoin(retailer.url, path)
-                response = requests.get(urljoin(url, str(event.auditorium_id)), headers=headers, timeout=10)
+                response = requests.get(urljoin(url, "1"), headers=headers, timeout=10)
 
                 auditoriumData = {
-                        'id': auditorium.pk,
+                        'id': "1",
                         'name': auditorium.name,
                         'address': auditorium.address + ', ' + auditorium.city + ', ' + auditorium.province,
                         'capacity': auditorium.capacity,
                 }
 
-                if response.status_code == 404:
+                # if response.status_code == 404:
                     # Create the auditorium on the remote site
-                    response = requests.post(url, headers=headers, data=json.dumps(auditoriumData), timeout=10)
-                else:
-                    auditoriumData.pop('id') # Do not send the auditorium ID when modifying
-                    response = requests.put(urljoin(url, str(event.auditorium_id)), headers=headers, data=json.dumps(auditoriumData), timeout=10)
+                response = requests.post(url, headers=headers, data=json.dumps(auditoriumData), timeout=10)
+                # else:
+                #     auditoriumData.pop('id') # Do not send the auditorium ID when modifying
+                #     response = requests.put(urljoin(url, str(event.auditorium_id)), headers=headers, data=json.dumps(auditoriumData), timeout=10)
 
                 # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
-                #pprint.pprint(response.text)
+                pprint.pprint(response.text)
                 response.raise_for_status()
                 if str(response.status_code)[0] != '2':
                     return HttpResponse(status=500)
@@ -122,11 +122,11 @@ def publish(request, eventId):
                 # Add the event
                 path = 'api/shows/'
                 url = urljoin(retailer.url, path)
-                response = requests.get(urljoin(url, str(event.pk)), headers=headers, timeout=10)
+                response = requests.get(urljoin(url, "1"), headers=headers, timeout=10)
 
                 eventData = {
-                    'id': event.pk,
-                    'venueid': auditorium.pk,
+                    'id': "1",
+                    'venueid': "1",
                     'title': event.name,
                     'artist': event.artist,
                     'time': event.startDate.isoformat(),
@@ -138,31 +138,34 @@ def publish(request, eventId):
                     'price': float(event.ticketPrice),
                 }
 
-                if response.status_code == 404:
+                # if response.status_code == 404:
                     # Create the event on the remote site
-                    response = requests.post(url, headers=headers, data=json.dumps(eventData), timeout=10)
-                else:
-                    eventData.pop('id') # Do not send the event ID when modifying
-                    response = requests.put(urljoin(url, str(event.pk)), headers=headers, data=json.dumps(eventData), timeout=10)
+                response = requests.post(url, headers=headers, data=json.dumps(eventData), timeout=10)
+                # else:
+                #     eventData.pop('id') # Do not send the event ID when modifying
+                #     response = requests.put(urljoin(url, str(event.pk)), headers=headers, data=json.dumps(eventData), timeout=10)
 
                 # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
-                #pprint.pprint(response.text)
+                pprint.pprint(response.text)
                 response.raise_for_status()
                 if str(response.status_code)[0] != '2':
                     return HttpResponse(status=500)
 
                 # Push ticket IDs to the remote event
-                path = urljoin(urljoin('api/shows/', str(event.pk) + '/'), 'tickets')
+                path = urljoin(urljoin('api/shows/', "1" + '/'), 'tickets')
                 url = urljoin(retailer.url, path)
                 tickets = Ticket.objects.filter(event=event)
                 ticketArray=[str(tickets[i].pk) for i in range(tickets.count())]
                 ticketData = {
                     'guids': ticketArray,
                 }
+
+                print(ticketArray)
+
                 response = requests.post(url, headers=headers, data=json.dumps(ticketData), timeout=10)
 
                 # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
-                #pprint.pprint(response.text)
+                pprint.pprint(response.text)
                 response.raise_for_status()
                 if str(response.status_code)[0] != '2':
                     return HttpResponse(status=500)
@@ -192,7 +195,7 @@ def publish(request, eventId):
                     response = requests.put(urljoin(url, str(event.auditorium_id)), headers=headers, data=json.dumps(auditoriumData), timeout=10)
 
                 # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
-                #pprint.pprint(response.text)
+                pprint.pprint(response.text)
                 response.raise_for_status()
                 if str(response.status_code)[0] != '2':
                     return HttpResponse(status=500)
@@ -295,6 +298,7 @@ def open(request, eventId):
             #pprint.pprint(response.text)
             response.raise_for_status()
             if str(response.status_code)[0] != '2':
+                messages.error(request, "An error occured. Event could not be opened!")
                 return HttpResponse(status=500)
         elif retailer.pk == 2:
             path = 'api/show/'
@@ -311,18 +315,20 @@ def open(request, eventId):
             #pprint.pprint(response.text)
             response.raise_for_status()
             if str(response.status_code)[0] != '2':
+                messages.error(request, "An error occured. Event could not be opened!")
                 return HttpResponse(status=500)
 
         event.isOnSale = True
         event.status = 'o'
         event.save()
+        messages.success(request, "Event opened!")
 
         events = getEventPage(request, 1)
 
         context = {
             'events': events,
         }
-        return render(request, 'eventTable.html', {**eventContext, **context})
+        return render(request, 'dashboard.html', {**eventContext, **context})
 
 def close(request, eventId):
     if request.method == 'GET':
@@ -371,6 +377,7 @@ def close(request, eventId):
             #pprint.pprint(response.text)
             response.raise_for_status()
             if str(response.status_code)[0] != '2':
+                messages.error(request, "An error occured. Event could not be closed!")
                 return HttpResponse(status=500)
 
             # Overwrite local ticket data
@@ -385,15 +392,13 @@ def close(request, eventId):
                     ticket.save()
                 except:
                     continue
-
-            # return HttpResponse(status=501) # Not yet implemented
         elif retailer.pk == 2:
             path = 'api/show/'
             url = urljoin(retailer.url, path)
 
             patchData = {
                     'isOnSale': False,
-                }
+            }
 
             response = requests.patch(urljoin(url, str(event.pk)), headers=headers, data=json.dumps(patchData), timeout=10)
 
@@ -412,6 +417,7 @@ def close(request, eventId):
             #pprint.pprint(response.text)
             response.raise_for_status()
             if str(response.status_code)[0] != '2':
+                messages.error(request, "An error occured. Event could not be closed!")
                 return HttpResponse(status=500)
 
             # Overwrite local ticket data
@@ -425,6 +431,7 @@ def close(request, eventId):
                 ticket.save()
 
         event.save()
+        messages.success(request, "Event closed!")
 
         events = getEventPage(request, 1)
 

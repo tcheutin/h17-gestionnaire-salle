@@ -39,8 +39,8 @@ $(function() {
             }
         });
     });
-    
-    $('#open').on('show.bs.modal', function() {        
+
+    $('#open').on('show.bs.modal', function() {
         $.ajax({
             'url': '/event/'.concat(eventId, '/open/'),
             'method': 'GET',
@@ -49,8 +49,8 @@ $(function() {
             }
         });
     });
-	
-	$('#close').on('show.bs.modal', function() {        
+
+	$('#close').on('show.bs.modal', function() {
         $.ajax({
             'url': '/event/'.concat(eventId, '/close/'),
             'method': 'GET',
@@ -59,8 +59,8 @@ $(function() {
             }
         });
     });
-    
-    $('#delete').on('show.bs.modal', function() { 
+
+    $('#delete').on('show.bs.modal', function() {
         $.ajax({
             'url': '/event/'.concat(eventId, '/delete/'),
             'method': 'GET',
@@ -127,7 +127,7 @@ $(function() {
             }
         });
     });
-  
+
     $('#open-button').on('click', function() {
         var form = $('#open-form')[0];
         var formData = new FormData(form);
@@ -139,15 +139,11 @@ $(function() {
             'contentType': false,
             'processData': false,
             'success': function(response){
-                $('#event-table').html(response);
-                alert("Event opened for sale.");
-            },
-            error: function(){
-                alert('Error occured. Could not open the event for sale.');
+                $('body').html(response);
             }
         });
     });
-	
+
 	$('#close-button').on('click', function() {
         var form = $('#close-form')[0];
         var formData = new FormData(form);
@@ -159,15 +155,11 @@ $(function() {
             'contentType': false,
             'processData': false,
             'success': function(response){
-                $('#event-table').html(response);
-                alert("Event closed for sale.");
-            },
-            error: function(){
-                alert('Error occured. Could not close the event for sale.');
+                $('body').html(response);
             }
         });
     });
-    
+
     $('#delete-button').on('click', function() {
         var form = $('#delete-form')[0];
         var formData = new FormData(form);
