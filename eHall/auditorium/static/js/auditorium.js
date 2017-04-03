@@ -40,7 +40,7 @@ $(function() {
         });
     });
 
-    $('#events').on('show.bs.modal', function() {        
+    $('#events').on('show.bs.modal', function() {
         $.ajax({
             'url': '/auditorium/'.concat(auditoriumId, '/events/'),
             'method': 'GET',
@@ -65,11 +65,7 @@ $(function() {
             'contentType': false,
             'processData': false,
             'success': function(response){
-                $('#auditorium-table').html(response);
-                alert("Auditorium added.");
-            },
-            error: function(){
-                alert('Error occured. Could not add a auditorium');
+                $('body').html(response);
             }
         });
     });
@@ -89,11 +85,7 @@ $(function() {
             'contentType': false,
             'processData': false,
             'success': function(response){
-                $('#auditorium-table').html(response);
-                alert("Auditorium edited.");
-            },
-            error: function(){
-                alert('Error occured. Could not edit the auditorium');
+                $('body').html(response);
             }
         });
     });
@@ -109,11 +101,7 @@ $(function() {
             'contentType': false,
             'processData': false,
             'success': function(response){
-                $('#auditorium-table').html(response);
-                alert("Auditorium deleted.");
-            },
-            error: function(){
-                alert('Error occured. Could not delete the auditorium');
+                $('body').html(response);
             }
         });
     });

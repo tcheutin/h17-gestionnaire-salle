@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
 from api.models import Terminal
+from django.contrib import messages
 from eHall.models import Ticket
 from .models import Event
 from .forms import *
@@ -45,15 +46,18 @@ def add(request):
                 ticketList.append(ticket)
 
             Ticket.objects.bulk_create(ticketList)
+            messages.success(request, "Event sucessfully added!")
         else:
-            return HttpResponse(status=400)
+            messages.error(request, "An error occured. Event could not be added!")
 
         events = getEventPage(request, 1)
 
         context = {
             'events': events,
         }
-        return render(request, 'eventTable.html', {**eventContext, **context})
+
+        return render(request, 'dashboard.html', {**eventContext, **context})
+
 
 def edit(request, eventId):
     if request.method == 'GET':
@@ -63,18 +67,23 @@ def edit(request, eventId):
         form = EditForm(request.POST or None, instance=event)
         if form.is_valid():
             form.save()
+            messages.success(request, "Event edited!")
         else:
-            return HttpResponse(status=400)
+            messages.error(request, "An error occured. Event could not be added!")
 
         events = getEventPage(request, 1)
 
         context = {
             'events': events,
         }
-        return render(request, 'eventTable.html', {**eventContext, **context})
+        return render(request, 'dashboard.html', {**eventContext, **context})
 
 def publish(request, eventId):
-    if request.method == 'GET':
+    if request.method 
+    
+    
+    
+    'GET':
         return getPublishForm(request, eventId)
     elif request.method == 'POST':
         event = Event.objects.get(pk=eventId)
@@ -244,8 +253,9 @@ def publish(request, eventId):
             # Operations were successful. Change the local model to reflect changes.
             event.isPublished = True
             event.save()
+            messages.success(request, "Event published!")
         else:
-            return HttpResponse(status=400)
+            messages.error(request, "An error occured. Event could not be published!")
 
         events = getEventPage(request, 1)
 
@@ -425,7 +435,7 @@ def close(request, eventId):
         context = {
             'events': events,
         }
-        return render(request, 'eventTable.html', {**eventContext, **context})
+        return render(request, 'dashboard.html', {**eventContext, **context})
 
 def delete(request, eventId):
     if request.method == 'GET':
@@ -433,13 +443,14 @@ def delete(request, eventId):
     elif request.method == 'POST':
         event = Event.objects.get(pk=eventId)
         event.delete()
+        messages.success(request, "Event sucessfully deleted!")
 
         events = getEventPage(request, 1)
 
         context = {
             'events': events,
         }
-        return render(request, 'eventTable.html', {**eventContext, **context})
+        return render(request, 'dashboard.html', {**eventContext, **context})
 
 def statistics(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
@@ -466,15 +477,6 @@ def statistics(request, eventId):
     }
     return render(request, 'statisticsView.html', {**eventContext, **context})
 
-def getPublishForm(request, eventId):
-    event = get_object_or_404(Event, pk=eventId)
-    form = PublishForm(instance=event)
-
-    context = {
-        'event': event,
-        'form': form,
-    }
-    return render(request, 'publishForm.html', {**eventContext, **context})
 
 def getAddForm(request):
     form = AddForm()
