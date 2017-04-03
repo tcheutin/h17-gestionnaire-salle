@@ -79,11 +79,7 @@ def edit(request, eventId):
         return render(request, 'dashboard.html', {**eventContext, **context})
 
 def publish(request, eventId):
-    if request.method 
-    
-    
-    
-    'GET':
+    if request.method == 'GET':
         return getPublishForm(request, eventId)
     elif request.method == 'POST':
         event = Event.objects.get(pk=eventId)
@@ -186,7 +182,7 @@ def publish(request, eventId):
                         'postalCode': auditorium.postalCode,
                         'capacity': auditorium.capacity,
                         'image': auditorium.image,
-                    }
+                }
 
                 if response.status_code == 404:
                     # Create the auditorium on the remote site
@@ -262,7 +258,7 @@ def publish(request, eventId):
         context = {
             'events': events,
         }
-        return render(request, 'eventTable.html', {**eventContext, **context})
+        return render(request, 'dashboard.html', {**eventContext, **context})
 
 def open(request, eventId):
     if request.method == 'GET':
