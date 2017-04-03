@@ -81,22 +81,92 @@ def publish(request, eventId):
         form = PublishForm(request.POST or None, instance=event)
         if form.is_valid():
             event = form.save(commit=False)
-            
+
             retailer = event.retailer
             auditorium = event.auditorium
             headers = {
                     'Content-Type': 'application/json',
                     'Authorization': retailer.key,
-                }
-            
+            }
+
             if retailer.pk == 1:
-                return HttpResponse(status=501) # Not yet implemented
+                path = 'api/venues'
+                url = urljoin(retailer.url, path)
+                response = requests.get(urljoin(url, str(event.auditorium_id)), headers=headers, timeout=10)
+
+                auditoriumData = {
+                        'id': auditorium.pk,
+                        'name': auditorium.name,
+                        'address': auditorium.address + ', ' + auditorium.city + ', ' + auditorium.province + ', ' + auditorium.postalCode,
+                        'capacity': auditorium.capacity,
+                }
+
+                if response.status_code == 404:
+                    # Create the auditorium on the remote site
+                    response = requests.post(url, headers=headers, data=json.dumps(auditoriumData), timeout=10)
+                else:
+                    auditoriumData.pop('id') # Do not send the auditorium ID when modifying
+                    response = requests.put(urljoin(url, str(event.auditorium_id)), headers=headers, data=json.dumps(auditoriumData), timeout=10)
+
+                # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
+                #pprint.pprint(response.text)
+                response.raise_for_status()
+                if str(response.status_code)[0] != '2':
+                    return HttpResponse(status=500)
+
+                # Add the event
+                path = 'api/shows'
+                url = urljoin(retailer.url, path)
+                response = requests.get(urljoin(url, str(event.pk)), headers=headers, timeout=10)
+
+                eventData = {
+                    'id': event.pk,
+                    'venueid': auditorium.pk,
+                    'title': event.name,
+                    'artist': event.artist,
+                    'time': event.startDate.isoformat(),
+                    'description': event.description,
+                    'image': event.image,
+                    'visible': event.isPublished,
+                    'active': event.isOnSale,
+                    'hot': True,
+                    'price': float(event.ticketPrice),
+                }
+
+                if response.status_code == 404:
+                    # Create the event on the remote site
+                    response = requests.post(url, headers=headers, data=json.dumps(eventData), timeout=10)
+                else:
+                    eventData.pop('id') # Do not send the event ID when modifying
+                    response = requests.put(urljoin(url, str(event.pk)), headers=headers, data=json.dumps(eventData), timeout=10)
+
+                # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
+                #pprint.pprint(response.text)
+                response.raise_for_status()
+                if str(response.status_code)[0] != '2':
+                    return HttpResponse(status=500)
+
+                # Push ticket IDs to the remote event
+                path = urljoin(urljoin('api/shows/', str(event.pk) + '/'), 'tickets')
+                url = urljoin(retailer.url, path)
+                tickets = Ticket.objects.filter(event=event)
+                ticketArray=[{'guids':str(tickets[i].pk)} for i in range(tickets.count())]
+                ticketData = {
+                    'tickets': ticketArray,
+                }
+                response = requests.post(url, headers=headers, data=json.dumps(ticketData), timeout=10)
+
+                # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
+                #pprint.pprint(response.text)
+                response.raise_for_status()
+                if str(response.status_code)[0] != '2':
+                    return HttpResponse(status=500)
             elif retailer.pk == 2:
                 # Add or edit the auditorium
                 path = 'api/theater/'
                 url = urljoin(retailer.url, path)
                 response = requests.get(urljoin(url, str(event.auditorium_id)), headers=headers, timeout=10)
-                
+
                 auditoriumData = {
                         'theaterId': auditorium.pk,
                         'adminId': event.creator_id,
@@ -108,25 +178,25 @@ def publish(request, eventId):
                         'capacity': auditorium.capacity,
                         'image': auditorium.image,
                     }
-                
+
                 if response.status_code == 404:
                     # Create the auditorium on the remote site
                     response = requests.post(url, headers=headers, data=json.dumps(auditoriumData), timeout=10)
                 else:
                     auditoriumData.pop('theaterId') # Do not send the auditorium ID when modifying
                     response = requests.put(urljoin(url, str(event.auditorium_id)), headers=headers, data=json.dumps(auditoriumData), timeout=10)
-                
+
                 # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
                 #pprint.pprint(response.text)
                 response.raise_for_status()
                 if str(response.status_code)[0] != '2':
                     return HttpResponse(status=500)
-                    
+
                 # Add the event
                 path = 'api/show/'
                 url = urljoin(retailer.url, path)
                 response = requests.get(urljoin(url, str(event.pk)), headers=headers, timeout=10)
-                
+
                 eventData = {
                     'showId': event.pk,
                     'theaterId': auditorium.pk,
@@ -141,20 +211,20 @@ def publish(request, eventId):
                     'isPublished': False,
                     'isOnSale': False,
                 }
-                
+
                 if response.status_code == 404:
                     # Create the event on the remote site
                     response = requests.post(url, headers=headers, data=json.dumps(eventData), timeout=10)
                 else:
                     eventData.pop('showId') # Do not send the event ID when modifying
                     response = requests.put(urljoin(url, str(event.pk)), headers=headers, data=json.dumps(eventData), timeout=10)
-                    
+
                 # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
                 #pprint.pprint(response.text)
                 response.raise_for_status()
                 if str(response.status_code)[0] != '2':
                     return HttpResponse(status=500)
-                    
+
                 # Push ticket IDs to the remote event
                 path = urljoin(urljoin('api/show/', str(event.pk) + '/'), 'tickets')
                 url = urljoin(retailer.url, path)
@@ -164,13 +234,13 @@ def publish(request, eventId):
                     'tickets': ticketArray,
                 }
                 response = requests.post(url, headers=headers, data=json.dumps(ticketData), timeout=10)
-                
+
                 # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
                 #pprint.pprint(response.text)
                 response.raise_for_status()
                 if str(response.status_code)[0] != '2':
                     return HttpResponse(status=500)
-                    
+
             # Operations were successful. Change the local model to reflect changes.
             event.isPublished = True
             event.save()
@@ -183,38 +253,38 @@ def publish(request, eventId):
             'events': events,
         }
         return render(request, 'eventTable.html', {**eventContext, **context})
-        
+
 def open(request, eventId):
     if request.method == 'GET':
         return getOpenForm(request, eventId)
     elif request.method == 'POST':
         event = Event.objects.get(pk=eventId)
-        
+
         retailer = event.retailer
         headers = {
                 'Content-Type': 'application/json',
                 'Authorization': retailer.key,
             }
-        
+
         if retailer.pk == 1:
             return HttpResponse(status=501) # Not yet implemented
         elif retailer.pk == 2:
             path = 'api/show/'
             url = urljoin(retailer.url, path)
-            
+
             patchData = {
                     'isPublished': True,
                     'isOnSale': True,
                 }
-            
+
             response = requests.patch(urljoin(url, str(event.pk)), headers=headers, data=json.dumps(patchData), timeout=10)
-            
+
             # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
             #pprint.pprint(response.text)
             response.raise_for_status()
             if str(response.status_code)[0] != '2':
                 return HttpResponse(status=500)
-        
+
         event.isOnSale = True
         event.status = 'o'
         event.save()
@@ -232,42 +302,42 @@ def close(request, eventId):
     elif request.method == 'POST':
         event = Event.objects.get(pk=eventId)
         event.status = 'c'
-        
+
         retailer = event.retailer
         headers = {
                 'Content-Type': 'application/json',
                 'Authorization': retailer.key,
             }
-        
+
         if retailer.pk == 1:
             return HttpResponse(status=501) # Not yet implemented
         elif retailer.pk == 2:
             path = 'api/show/'
             url = urljoin(retailer.url, path)
-            
+
             patchData = {
                     'isOnSale': False,
                 }
-            
+
             response = requests.patch(urljoin(url, str(event.pk)), headers=headers, data=json.dumps(patchData), timeout=10)
-            
+
             # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
             #pprint.pprint(response.text)
             response.raise_for_status()
             if str(response.status_code)[0] != '2':
                 return HttpResponse(status=500)
-                
+
             # Retrieve ticket information
             path = urljoin(urljoin('api/show/', str(event.pk) + '/'), 'tickets')#?isSold=true')
             url = urljoin(retailer.url, path)
             response = requests.get(url, headers=headers, timeout=10)
-            
+
             # If the response is unsuccessful (HTTP response code not 2xx), return error 500.
             #pprint.pprint(response.text)
             response.raise_for_status()
             if str(response.status_code)[0] != '2':
                 return HttpResponse(status=500)
-                
+
             # Overwrite local ticket data
             tickets = response.json()['tickets']
             for i in range(len(tickets)):
@@ -277,7 +347,7 @@ def close(request, eventId):
                 if ticket.isSold:
                     ticket.owner = '{} {}'.format(ticket[i]['client']['firstName'], ticket[i]['client']['lastName'])
                 ticket.save()
-        
+
         event.save()
 
         events = getEventPage(request, 1)
@@ -363,7 +433,7 @@ def getPublishForm(request, eventId):
         'form': form,
     }
     return render(request, 'publishForm.html', {**eventContext, **context})
-    
+
 def getOpenForm(request, eventId):
     event = get_object_or_404(Event, pk=eventId)
 
