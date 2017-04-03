@@ -357,7 +357,7 @@ def close(request, eventId):
                 ticket.isReserved = False
                 ticket.isSold = tickets[i]['state'] == 'sold'
                 if ticket.isSold:
-                    ticket.owner = 'N/A'#tickets[i]['client']
+                    ticket.owner = tickets[i]['owner']
                 ticket.save()
 
             # return HttpResponse(status=501) # Not yet implemented
