@@ -295,6 +295,7 @@ def open(request, eventId):
             #pprint.pprint(response.text)
             response.raise_for_status()
             if str(response.status_code)[0] != '2':
+                messages.error(request, "An error occured. Event could not be opened!")
                 return HttpResponse(status=500)
         elif retailer.pk == 2:
             path = 'api/show/'
@@ -311,18 +312,20 @@ def open(request, eventId):
             #pprint.pprint(response.text)
             response.raise_for_status()
             if str(response.status_code)[0] != '2':
+                messages.error(request, "An error occured. Event could not be opened!")
                 return HttpResponse(status=500)
 
         event.isOnSale = True
         event.status = 'o'
         event.save()
+        messages.success(request, "Event opened!")
 
         events = getEventPage(request, 1)
 
         context = {
             'events': events,
         }
-        return render(request, 'eventTable.html', {**eventContext, **context})
+        return render(request, 'dashboard.html', {**eventContext, **context})
 
 def close(request, eventId):
     if request.method == 'GET':
@@ -371,6 +374,7 @@ def close(request, eventId):
             #pprint.pprint(response.text)
             response.raise_for_status()
             if str(response.status_code)[0] != '2':
+                messages.error(request, "An error occured. Event could not be closed!")
                 return HttpResponse(status=500)
 
             # Overwrite local ticket data
@@ -385,15 +389,13 @@ def close(request, eventId):
                     ticket.save()
                 except:
                     continue
-
-            # return HttpResponse(status=501) # Not yet implemented
         elif retailer.pk == 2:
             path = 'api/show/'
             url = urljoin(retailer.url, path)
 
             patchData = {
                     'isOnSale': False,
-                }
+            }
 
             response = requests.patch(urljoin(url, str(event.pk)), headers=headers, data=json.dumps(patchData), timeout=10)
 
@@ -412,6 +414,7 @@ def close(request, eventId):
             #pprint.pprint(response.text)
             response.raise_for_status()
             if str(response.status_code)[0] != '2':
+                messages.error(request, "An error occured. Event could not be closed!")
                 return HttpResponse(status=500)
 
             # Overwrite local ticket data
@@ -425,6 +428,7 @@ def close(request, eventId):
                 ticket.save()
 
         event.save()
+        messages.success(request, "Event closed!")
 
         events = getEventPage(request, 1)
 
