@@ -2,6 +2,7 @@
 
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse
 from datetime import datetime
 from .models import Auditorium
 from event.models import Event
@@ -33,6 +34,8 @@ def add(request):
             auditorium = form.save()
             auditorium.creator = request.user
             auditorium.save()
+        else:
+            return HttpResponse(status=400)
             
         auditoriums = getAuditoriumPage(request, 1)
         
@@ -49,6 +52,8 @@ def edit(request, auditoriumId):
         form = EditForm(request.POST or None, instance=auditorium)
         if form.is_valid():
             form.save()
+        else:
+            return HttpResponse(status=400)
             
         auditoriums = getAuditoriumPage(request, 1)
 

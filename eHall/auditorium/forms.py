@@ -12,7 +12,7 @@ class AddForm(ModelForm):
 
     class Meta:
         model = Auditorium
-        fields = ['name', 'address', 'city', 'province', 'capacity']
+        fields = ['name', 'image', 'address', 'postalCode', 'city', 'province', 'capacity']
         
 class EditForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -24,4 +24,4 @@ class EditForm(ModelForm):
 
     class Meta:
         model = Auditorium
-        fields = ['name', 'address', 'city', 'province', 'capacity']
+        fields = ['name', 'image', 'address', 'postalCode', 'city', 'province', 'capacity']

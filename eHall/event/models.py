@@ -12,7 +12,7 @@ class Event(models.Model):
 
     status = models.CharField(max_length=1, choices=STATUSES, blank=True, default='i')
     name = models.CharField(max_length=120, default='', help_text='Event Name')
-    image = models.ImageField(default='', blank=True, upload_to='uploads/images/', help_text='Event Image')
+    image = models.URLField(max_length=200, default='', null=False)
     artist = models.CharField(max_length=100, default='', help_text='Artist Name')
     isPublished = models.BooleanField(default=False)
     isOnSale = models.BooleanField(default=False)
@@ -49,6 +49,8 @@ class Event(models.Model):
         
 class TicketRetailer(models.Model):
     name = models.CharField(max_length=100, default='', null=False)
+    url = models.URLField(max_length=200, default='', null=False)
+    key = models.CharField(max_length=200, null=True)
     
     def __str__(self):
         return self.name

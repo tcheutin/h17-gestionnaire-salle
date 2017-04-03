@@ -15,7 +15,9 @@ class Auditorium(models.Model):
 
     status = models.CharField(max_length=1, choices=AUDITORIUM_STATUS, blank=True, default='i', help_text='Auditorium status')
     name = models.CharField(max_length=50, help_text="Enter an auditorium name.")
+    image = models.URLField(max_length=200, default='', blank=True, null=False)
     address = models.CharField(max_length=50, default='', help_text="Enter an address.")
+    postalCode = models.CharField(max_length=6, default='', help_text="Enter a postal code.")
     city = models.CharField(max_length=50, default='', help_text="Enter a city.")
     province = models.CharField(max_length=50, default='', help_text="Enter a province.")
     capacity = models.IntegerField(default=0)
