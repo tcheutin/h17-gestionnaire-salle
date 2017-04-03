@@ -81,13 +81,16 @@ def publish(request, eventId):
             # Incomplete
             event.status = 'o'
             event.save()
+            messages.success(request, "Event published!")
+        else:
+            messages.error(request, "An error occured. Event could not be published!")
 
         events = getEventPage(request, 1)
 
         context = {
             'events': events,
         }
-        return render(request, 'eventTable.html', {**eventContext, **context})
+        return render(request, 'dashboard.html', {**eventContext, **context})
 
 def delete(request, eventId):
     if request.method == 'GET':

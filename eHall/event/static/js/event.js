@@ -111,7 +111,7 @@ $(function() {
             'contentType': false,
             'processData': false,
             'success': function(response){
-                $('#event-table').html(response);
+                $('body').html(response);
             }
         });
     });
